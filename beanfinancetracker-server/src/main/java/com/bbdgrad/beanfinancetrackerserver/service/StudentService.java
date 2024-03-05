@@ -3,9 +3,11 @@ package com.bbdgrad.beanfinancetrackerserver.service;
 
 import com.bbdgrad.beanfinancetrackerserver.model.Student;
 import com.bbdgrad.beanfinancetrackerserver.repository.StudentRepository;
+import jakarta.transaction.Transactional;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
 
+import java.time.LocalDate;
 import java.util.List;
 import java.util.Optional;
 
@@ -38,5 +40,28 @@ public class StudentService {
             throw new IllegalStateException("Student with id " + id + " not found");
         }
         studentRepository.deleteById(id);
+    }
+
+    @Transactional
+    public void updateStudent(Long id, String name, LocalDate dob, String email) {
+        Optional<Student> studentOptional = studentRepository.findById(id);
+        if (studentOptional.isPresent()) {
+            Student updatedStudent = studentOptional.get();
+            if (name != null && !name.isBlank() && !name.equals(updatedStudent.getName())) {
+                updatedStudent.setName(name);
+            }
+            if (dob != null && !dob.equals(updatedStudent.getDob())) {
+                updatedStudent.setDob(dob);
+            }
+            if (email != null && !email.isBlank() && !email.equals(updatedStudent.getEmail())) {
+                Optional<Student> emailStudent = studentRepository.findByEmail(email);
+                if (emailStudent.isPresent()) {
+                    throw new IllegalStateException("Email already registered");
+                }
+                updatedStudent.setEmail(email);
+            }
+        } else {
+            throw new IllegalStateException("Student with id " + id + " not found");
+        }
     }
 }
