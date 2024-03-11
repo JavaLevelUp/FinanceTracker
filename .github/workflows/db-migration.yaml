@@ -1,0 +1,45 @@
+name: Database change CD
+
+on:
+  push:
+    paths: 
+      - "database/**"
+
+permissions:
+  id-token: write   # This is required for requesting the JWT
+  contents: read    # This is required for actions/checkout
+
+jobs:
+  migrate_db:
+    name: Migrate DB
+    runs-on: self-hosted
+    steps:
+      - name: Clone the repo
+        uses: actions/checkout@main
+
+      - name: Configure AWS Credentials
+        uses: aws-actions/configure-aws-credentials@v4
+        with:
+          role-to-assume: ${{secrets.AWS_ASSUME_ROLE}}
+          aws-region: "eu-west-1"
+
+      - name: Fetch AWS RDS endpoint
+        run: |
+          echo "DB_ENDPOINT=$(aws rds describe-db-instances --db-instance-identifier finance-tracker-db --query 'DBInstances[0].Endpoint.Address' --output text)" >> $GITHUB_ENV
+    
+      - name: Validate migration
+        uses: liquibase-github-actions/validate@v4.26.0
+        with:
+          changelogFile: "./database/changelog.yaml"
+          url: "jdbc:postgresql://${{env.DB_ENDPOINT}}:5432/ftdb"
+          password: "${{secrets.TF_VAR_RDS_PASSWORD}}"
+          username: "${{secrets.TF_VAR_RDS_USERNAME}}"
+
+      - name: Perform migration
+        if: github.ref.name == 'main'
+        uses: liquibase-github-actions/update@v4.26.0
+        with:
+          changelogFile: "./database/changelog.yaml"
+          url: "jdbc:postgresql://${{env.DB_ENDPOINT}}:5432/ftdb"
+          password: "${{secrets.TF_VAR_RDS_PASSWORD}}"
+          username: "${{secrets.TF_VAR_RDS_USERNAME}}"
