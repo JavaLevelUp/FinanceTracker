@@ -7,6 +7,7 @@ import com.bbdgrad.beanfinancetrackerserver.model.Student;
 import com.bbdgrad.beanfinancetrackerserver.repository.CountryRepository;
 import lombok.RequiredArgsConstructor;
 import org.springframework.http.HttpStatus;
+import org.springframework.http.ResponseEntity;
 import org.springframework.stereotype.Service;
 import org.springframework.web.server.ResponseStatusException;
 
@@ -18,50 +19,48 @@ import java.util.Optional;
 public class CountryService {
     private final CountryRepository countryRepository;
 
-    public List<Country> getCountries() {
+    public ResponseEntity<List<Country>> getCountries() {
         Optional<List<Country>> countryList = Optional.of(countryRepository.findAll());
-        return countryList.orElseGet(List::of);
+        return ResponseEntity.ok().body(countryList.orElseGet(List::of));
     }
 
-    public Country registerCountry(CountryRequest countryRequest){
+    public ResponseEntity<Country> registerCountry(CountryRequest countryRequest){
         Optional<Country> countryExist = countryRepository.findByName(countryRequest.getName());
-        if(countryExist.isPresent()){
-            throw new ResponseStatusException(HttpStatus.CONFLICT, "Country already exists");
-        }
+        if(countryExist.isPresent()) return new ResponseEntity("Country already Exists", HttpStatus.CONFLICT);
         var newCountry = Country.builder().name(countryRequest.getName()).build();
         countryRepository.save(newCountry);
-        return newCountry;
+        return ResponseEntity.ok().body(newCountry);
     }
 
-    public String removeCountry(Integer id){
+    public ResponseEntity<String> removeCountry(Integer id){
         Optional<Country> countryExist = countryRepository.findById(id);
         if(countryExist.isEmpty()){
-            throw new ResponseStatusException(HttpStatus.NOT_FOUND, "Country does not exists");
+            return new ResponseEntity<>("Country does not Exists", HttpStatus.NOT_FOUND);
         }
         countryRepository.deleteById(id);
 
-        return "Country remove successfully";
+        return ResponseEntity.ok().body("Country remove successfully");
     }
 
-    public Country getCountry(Integer id){
+    public ResponseEntity<Country> getCountry(Integer id){
         Optional<Country> country = countryRepository.findById(id);
         if(country.isEmpty()){
-            throw new ResponseStatusException(HttpStatus.NOT_FOUND, "Country does not exists");
+            return new ResponseEntity("Country does exist Exists", HttpStatus.NOT_FOUND);
         }
-        return country.orElse(null);
+        return ResponseEntity.ok().body(country.orElse(null));
     }
 
-    public Country updateCountry(Integer id, String name) throws Exception {
+    public ResponseEntity<Country> updateCountry(Integer id, String name) {
         if(name == null){
-            throw new Exception("Nothing to update");
+            return new ResponseEntity("Nothing to update", HttpStatus.BAD_REQUEST);
         }
         Optional<Country> country = countryRepository.findById(id);
         if(country.isEmpty()){
-            throw new ResponseStatusException(HttpStatus.NOT_FOUND, "Country does not exists");
+            return new ResponseEntity("Country already Exists", HttpStatus.NOT_FOUND);
         }
         country.get().setName(name);
         countryRepository.save(country.get());
-        return country.get();
+        return ResponseEntity.ok().body(country.get());
 
     }
 }
