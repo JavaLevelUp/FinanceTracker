@@ -1,0 +1,70 @@
+name: 'Terragrunt GitHub Actions'
+on:
+  push:
+    paths: 
+      - "infrastructure/**"
+  workflow_dispatch:
+
+env:
+  tf_version: '1.5.7'
+  tg_version: '0.53.2'
+  working_dir: 'infrastructure'
+  
+permissions:
+  id-token: write
+  contents: read
+
+jobs:
+  terragrunt:
+    runs-on: ubuntu-latest
+    steps:
+      - name: 'Checkout'
+        uses: actions/checkout@main
+
+      - name: Configure AWS Credentials
+        uses: aws-actions/configure-aws-credentials@v4
+        with:
+          role-to-assume: ${{secrets.AWS_ASSUME_ROLE}}
+          aws-region: "eu-west-1"
+          
+      - name: Validate
+        id: validate
+        uses: gruntwork-io/terragrunt-action@v2
+        with:
+          tf_version: ${{ env.tf_version }}
+          tg_version: ${{ env.tg_version }}
+          tg_dir: ${{ env.working_dir }}
+          tg_command: 'run-all validate'
+
+      - name: Validate Status
+        if: steps.validate.outcome == 'failure'
+        run: exit 1
+
+      - name: Plan
+        id: plan
+        uses: gruntwork-io/terragrunt-action@v2
+        with:
+          tf_version: ${{ env.tf_version }}
+          tg_version: ${{ env.tg_version }}
+          tg_dir: ${{ env.working_dir }}
+          tg_command: 'run-all plan'
+        env:
+          TF_VAR_password: ${{secrets.TF_VAR_RDS_PASSWORD}}
+          TF_VAR_username: ${{secrets.TF_VAR_RDS_USERNAME}}
+
+      - name: Plan Status
+        if: steps.plan.outcome == 'failure'
+        run: exit 1
+
+      - name: Apply
+        id: apply
+        if: github.ref.name == 'main'
+        uses: gruntwork-io/terragrunt-action@v2
+        with:
+          tf_version: ${{ env.tf_version }}
+          tg_version: ${{ env.tg_version }}
+          tg_dir: ${{ env.working_dir }}
+          tg_command: 'run-all apply'
+        env:
+          TF_VAR_password: ${{secrets.TF_VAR_RDS_PASSWORD}}
+          TF_VAR_username: ${{secrets.TF_VAR_RDS_USERNAME}}

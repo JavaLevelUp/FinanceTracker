@@ -25,7 +25,7 @@ dependency "rds_sg" {
 }
 
 inputs = {
-  identifier = "finance-tracker-db"
+  identifier  = "finance-tracker-db"
   engine            = "postgres"
   engine_version    = "16"
 
@@ -52,10 +52,8 @@ inputs = {
 
   publicly_accessible = true
 
-
   # Login details
   db_name  = "ftdb"
-  username = "dbadmin"
   port     = "5432"
   iam_database_authentication_enabled = false
   manage_master_user_password = false
