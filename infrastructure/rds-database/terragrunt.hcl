@@ -55,7 +55,6 @@ inputs = {
 
   # Login details
   db_name  = "ftdb"
-  username = "dbadmin"
   port     = "5432"
   iam_database_authentication_enabled = false
   manage_master_user_password = false
