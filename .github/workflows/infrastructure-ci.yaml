@@ -58,7 +58,6 @@ jobs:
 
       - name: Apply
         id: apply
-        if: github.ref.name == 'main'
         uses: gruntwork-io/terragrunt-action@v2
         with:
           tf_version: ${{ env.tf_version }}
