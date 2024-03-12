@@ -10,24 +10,31 @@ import com.bbdgrad.beanfinancetrackerserver.token.Token;
 import com.bbdgrad.beanfinancetrackerserver.token.TokenRepository;
 import com.bbdgrad.beanfinancetrackerserver.token.TokenType;
 import lombok.RequiredArgsConstructor;
+import org.springframework.http.HttpStatus;
 import org.springframework.security.authentication.AuthenticationManager;
 import org.springframework.security.authentication.UsernamePasswordAuthenticationToken;
 import org.springframework.security.crypto.password.PasswordEncoder;
 import org.springframework.stereotype.Service;
+import org.springframework.web.server.ResponseStatusException;
 
 import java.sql.Timestamp;
-import java.util.Date;
+import java.util.Optional;
 
 @Service
 @RequiredArgsConstructor
 public class AuthService {
-    private final UserRepository repository;
+    private final UserRepository userRepository;
     private final TokenRepository tokenRepository;
     private final PasswordEncoder passwordEncoder;
     private final JwtService jwtService;
     private final AuthenticationManager authenticationManager;
 
     public AuthResponse register(RegisterRequest request) {
+        Optional<User> userExists = userRepository.findByEmail(request.getEmail());
+        if(userExists.isPresent()) {
+            System.out.println("User already exists");
+            throw new ResponseStatusException(HttpStatus.CONFLICT, "User already exists");
+        }
         var user = User.builder()
                 .name(request.getName())
                 .email(request.getEmail())
@@ -35,7 +42,7 @@ public class AuthService {
                 .role(request.getRole())
                 .created_at(new Timestamp(System.currentTimeMillis()))
                 .build();
-        var savedUser = repository.save(user);
+        var savedUser = userRepository.save(user);
         var jwtToken = jwtService.generateToken(user);
         var refreshToken = jwtService.generateRefreshToken(user);
         saveUserToken(savedUser, jwtToken);
@@ -63,7 +70,7 @@ public class AuthService {
                         request.getPassword()
                 )
         );
-        var user = repository.findByEmail(request.getEmail())
+        var user = userRepository.findByEmail(request.getEmail())
                 .orElseThrow();
         var jwtToken = jwtService.generateToken(user);
         var refreshToken = jwtService.generateRefreshToken(user);
