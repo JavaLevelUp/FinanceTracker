@@ -4,7 +4,7 @@ on:
   push:
     paths: 
       - "database/**"
-
+      
 permissions:
   id-token: write   # This is required for requesting the JWT
   contents: read    # This is required for actions/checkout
@@ -36,7 +36,6 @@ jobs:
           username: "${{secrets.TF_VAR_RDS_USERNAME}}"
 
       - name: Perform migration
-        if: github.ref.name == 'main'
         uses: liquibase-github-actions/update@v4.26.0
         with:
           changelogFile: "./database/changelog.yaml"
