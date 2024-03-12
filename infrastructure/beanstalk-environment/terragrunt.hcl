@@ -68,4 +68,8 @@ inputs = {
             cidr_blocks       = [dependency.vpc.outputs.vpc_cidr_block]
         }
     ]
+
+    env_vars = {
+        PORT = 8080
+    }
 }
