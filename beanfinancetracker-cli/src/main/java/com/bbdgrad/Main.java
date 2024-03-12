@@ -56,6 +56,7 @@ public class Main {
                     "0. Exit\n" +
                     "1. Register\n" +
                     "2. Login\n" +
+                    "3. GitHub oAuth\n" +
                     ">> ");
 
             if (scanner.hasNextLine()) {
@@ -70,6 +71,9 @@ public class Main {
                         break;
                     case '2':
                         login();
+                        break;
+                    case '3':
+                        authenticate();
                         break;
                     default:
                         System.out.println("Invalid selection.\n");
@@ -236,6 +240,50 @@ public class Main {
                 System.out.println("Invalid selection.\n");
             }
         } while (!exiting);
+    }
+
+    private static void authenticate() {
+        try (HttpClient httpClient = HttpClient.newHttpClient()) {
+            HttpRequest post = HttpRequest.newBuilder()
+                    .uri(new URI("https://github.com/login/device/code?client_id=" + prop.getProperty("CLIENT_ID") + "&scope=read:user"))
+                    .POST(HttpRequest.BodyPublishers.noBody())
+                    .header("Accept", "application/json")
+                    .build();
+
+            HttpResponse<String> response = httpClient.send(post, HttpResponse.BodyHandlers.ofString());
+
+            Gson gson = new Gson();
+            DeviceVerification deviceVerification = gson.fromJson(response.body(), DeviceVerification.class);
+
+            System.out.println("Please go to " + deviceVerification.verification_uri() + " and enter the code: " + deviceVerification.user_code());
+
+            boolean success = false;
+            while (!success) {
+                Thread.sleep(5000);
+                HttpRequest postRequest = HttpRequest.newBuilder()
+                        .uri(new URI("https://github.com/login/oauth/access_token?client_id=" + prop.getProperty("CLIENT_ID") + "&device_code=" + deviceVerification.device_code() + "&grant_type=urn:ietf:params:oauth:grant-type:device_code"))
+                        .POST(HttpRequest.BodyPublishers.noBody())
+                        .header("Accept", "application/json")
+                        .build();
+
+                response = httpClient.send(postRequest, HttpResponse.BodyHandlers.ofString());
+                AccessToken accessToken = gson.fromJson(response.body(), AccessToken.class);
+
+                if (accessToken.access_token() != null) {
+                    success = true;
+                    System.out.println("Successfully authenticated!");
+                    prop.setProperty("ACCESS_TOKEN", accessToken.access_token());
+                    System.out.println(prop.getProperty("ACCESS_TOKEN"));
+                }
+                else {
+                    System.out.println("Waiting for authentication...");
+                }
+            }
+
+        } catch (URISyntaxException | IOException | InterruptedException e) {
+            throw new RuntimeException(e);
+        }
+        System.out.println();
     }
 
 }
