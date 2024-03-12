@@ -25,7 +25,7 @@ dependency "rds_sg" {
 }
 
 inputs = {
-  identifier = "finance-tracker-db"
+  identifier  = "finance-tracker-db"
   engine            = "postgres"
   engine_version    = "16"
 
@@ -51,7 +51,6 @@ inputs = {
   skip_final_snapshot = true
 
   publicly_accessible = true
-
 
   # Login details
   db_name  = "ftdb"
