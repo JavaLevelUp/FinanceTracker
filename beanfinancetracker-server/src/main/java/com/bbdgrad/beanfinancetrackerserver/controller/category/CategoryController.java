@@ -36,8 +36,7 @@ public class CategoryController {
     }
 
     @PutMapping("/update/{categoryId}")
-    public ResponseEntity<Object> updateCategory(@PathVariable("categoryId") Integer categoryId, @RequestParam(required = false) float monthlyBudget) throws Exception {
-        System.out.println(monthlyBudget);
-        return categoryService.updateCategory(categoryId, BigDecimal.valueOf(monthlyBudget));
+    public ResponseEntity<Object> updateCategory(@PathVariable("categoryId") Integer categoryId, @RequestParam(required = false) BigDecimal monthlyBudget) throws Exception {
+        return categoryService.updateCategory(categoryId, monthlyBudget);
     }
 }

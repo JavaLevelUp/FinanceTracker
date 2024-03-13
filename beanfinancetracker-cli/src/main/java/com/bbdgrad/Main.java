@@ -264,13 +264,13 @@ public class Main {
                         CategoryController.updateCategory();
                         break;
                     case '4':
-
+                        CategoryController.deleteCategory();
                         break;
                     case '5':
-
+                        CategoryController.getAllCategories();
                         break;
                     case '6':
-
+                        CategoryController.getCategory();
                         break;
                     default:
                         System.out.println("Invalid selection.\n");

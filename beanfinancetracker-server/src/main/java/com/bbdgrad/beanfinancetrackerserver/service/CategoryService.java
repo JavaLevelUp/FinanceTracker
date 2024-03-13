@@ -48,7 +48,6 @@ public class CategoryService {
 
     public ResponseEntity<Object> updateCategory(Integer id, BigDecimal monthlyBudget) {
         Optional<Category> category = categoryRepository.findById(id);
-        System.out.println(monthlyBudget);
         if (category.isEmpty()) {
             return new ResponseEntity<>("Category not found", HttpStatus.NOT_FOUND);
         }
