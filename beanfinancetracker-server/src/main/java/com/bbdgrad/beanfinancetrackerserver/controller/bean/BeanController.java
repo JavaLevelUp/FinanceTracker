@@ -23,7 +23,7 @@ public class BeanController {
     }
 
     @PostMapping
-    public ResponseEntity<Bean> registerBean(@RequestBody BeanRequest beanRequest) throws Exception {
+    public ResponseEntity<Bean> registerBean(@RequestBody BeanRequest beanRequest) {
         return beanService.registerBean(beanRequest);
     }
 

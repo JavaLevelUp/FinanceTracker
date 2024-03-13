@@ -25,7 +25,7 @@ public class BeanService {
         return ResponseEntity.ok(beanList.orElseGet(List::of));
     }
 
-    public ResponseEntity<Bean> registerBean(BeanRequest beanRequest) throws  Exception{
+    public ResponseEntity<Bean> registerBean(BeanRequest beanRequest){
         Optional<Bean> beanExist = beanRepository.findByName(beanRequest.getName());
 
         if(beanExist.isPresent()){
