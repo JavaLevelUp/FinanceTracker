@@ -1,9 +1,7 @@
 package com.bbdgrad.Controller;
 
 import com.bbdgrad.model.Country;
-import com.bbdgrad.model.Student;
 import com.google.gson.Gson;
-import com.google.gson.JsonObject;
 import com.google.gson.reflect.TypeToken;
 
 import java.io.IOException;
@@ -133,12 +131,17 @@ public class CountryController {
                     .GET()
                     .build();
 
-            HttpResponse<String> getResponse = httpClient.send(getRequest, HttpResponse.BodyHandlers.ofString());
-            Gson gson = new Gson();
-            Type listOfCountries = new TypeToken<ArrayList<Country>>() {}.getType();
-            ArrayList<Country> countryList = gson.fromJson(getResponse.body(), listOfCountries);
-            for (Country c : countryList) {
-                System.out.println(c);
+            HttpResponse<String> response = httpClient.send(getRequest, HttpResponse.BodyHandlers.ofString());
+            if (response.statusCode() == 200) {
+                Gson gson = new Gson();
+                Type listOfCountries = new TypeToken<ArrayList<Country>>() {}.getType();
+                ArrayList<Country> countryList = gson.fromJson(response.body(), listOfCountries);
+                for (Country c : countryList) {
+                    System.out.println(c);
+                }
+            }
+            else {
+                System.out.println("API request failed. Status code: " + response.statusCode());
             }
         } catch (IOException | InterruptedException | URISyntaxException e) {
             throw new RuntimeException(e);
@@ -158,14 +161,17 @@ public class CountryController {
                     .GET()
                     .build();
 
-            HttpResponse<String> getResponse = httpClient.send(getRequest, HttpResponse.BodyHandlers.ofString());
-            if (getResponse.statusCode() == 404) {
+            HttpResponse<String> response = httpClient.send(getRequest, HttpResponse.BodyHandlers.ofString());
+            if (response.statusCode() == 200) {
+                Gson gson = new Gson();
+                Country country = gson.fromJson(response.body(), Country.class);
+                System.out.println(country);
+            }
+            else if (response.statusCode() == 404) {
                 System.out.println("Country not found");
             }
             else {
-                Gson gson = new Gson();
-                Country country = gson.fromJson(getResponse.body(), Country.class);
-                System.out.println(country);
+                System.out.println("API request failed. Status code: " + response.statusCode());
             }
         } catch (IOException | InterruptedException | URISyntaxException e) {
             throw new RuntimeException(e);
