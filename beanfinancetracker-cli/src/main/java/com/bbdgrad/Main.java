@@ -273,7 +273,8 @@ public class Main {
                     success = true;
                     System.out.println("Successfully authenticated!");
                     prop.setProperty("ACCESS_TOKEN", accessToken.access_token());
-                    System.out.println(prop.getProperty("ACCESS_TOKEN"));
+                    authenticated = true;
+                    showMainMenu();
                 }
                 else {
                     System.out.println("Waiting for authentication...");
