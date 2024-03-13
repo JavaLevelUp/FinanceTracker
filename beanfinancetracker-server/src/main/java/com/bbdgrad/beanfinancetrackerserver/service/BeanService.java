@@ -4,6 +4,7 @@ import com.bbdgrad.beanfinancetrackerserver.controller.bean.BeanRequest;
 import com.bbdgrad.beanfinancetrackerserver.model.Bean;
 import com.bbdgrad.beanfinancetrackerserver.model.Country;
 import com.bbdgrad.beanfinancetrackerserver.repository.BeanRepository;
+import com.bbdgrad.beanfinancetrackerserver.repository.CountryRepository;
 import lombok.RequiredArgsConstructor;
 import org.springframework.http.HttpStatus;
 import org.springframework.http.HttpStatusCode;
@@ -17,6 +18,7 @@ import java.util.Optional;
 @RequiredArgsConstructor
 public class BeanService {
     private final BeanRepository beanRepository;
+    private final CountryRepository countryRepository;
 
     public ResponseEntity<List<Bean>> getBeans() {
         Optional<List<Bean>> beanList = Optional.of(beanRepository.findAll());
@@ -25,11 +27,17 @@ public class BeanService {
 
     public ResponseEntity<Bean> registerBean(BeanRequest beanRequest) throws  Exception{
         Optional<Bean> beanExist = beanRepository.findByName(beanRequest.getName());
+
         if(beanExist.isPresent()){
             System.out.println("Bean already exists");
             return new ResponseEntity("Bean already Exists", HttpStatus.CONFLICT);
         }
-        var newBean = Bean.builder().name(beanRequest.getName()).build();
+        Optional<Country> countryExist = countryRepository.findById(beanRequest.getCountry_id());
+        if(countryExist.isEmpty()){
+            return new ResponseEntity("Country does not exist", HttpStatus.NOT_FOUND);
+        }
+
+        var newBean = Bean.builder().name(beanRequest.getName()).country_id(beanRequest.getCountry_id()).build();
         beanRepository.save(newBean);
         return ResponseEntity.ok(newBean);
     }
@@ -50,15 +58,19 @@ public class BeanService {
         return ResponseEntity.ok().body("Bean remove successfully");
     }
 
-    public ResponseEntity<Bean> updateBean(Integer id, String name) {
-        if(name == null){
-            return new ResponseEntity("Nothing to update", HttpStatus.BAD_REQUEST);
-        }
+    public ResponseEntity<Bean> updateBean(Integer id, String name, Optional<Integer> country_id) {
+
         Optional<Bean> bean = beanRepository.findById(id);
         if(bean.isEmpty()){
             return new ResponseEntity("Bean does not Exists", HttpStatus.NOT_FOUND);
         }
-        bean.get().setName(name);
+        if(name != null){
+            bean.get().setName(name);
+        }
+        if(country_id.isPresent()){
+            bean.get().setCountry_id(country_id.get());
+        }
+
         beanRepository.save(bean.get());
         return ResponseEntity.ok().body(bean.get());
 

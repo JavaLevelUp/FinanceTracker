@@ -9,6 +9,7 @@ import org.springframework.http.ResponseEntity;
 import org.springframework.web.bind.annotation.*;
 
 import java.util.List;
+import java.util.Optional;
 
 @RestController
 @RequiredArgsConstructor
@@ -37,7 +38,7 @@ public class BeanController {
     }
 
     @PutMapping("/update/{beanId}")
-    public ResponseEntity<Bean> updateCountry(@PathVariable("beanId") Integer beanId, @RequestParam(required = false) String name)  {
-        return beanService.updateBean(beanId, name);
+    public ResponseEntity<Bean> updateCountry(@PathVariable("beanId") Integer beanId, @RequestParam(required = false) String name, @RequestParam(required = false) Optional<Integer> country_id)  {
+        return beanService.updateBean(beanId, name, country_id);
     }
 }

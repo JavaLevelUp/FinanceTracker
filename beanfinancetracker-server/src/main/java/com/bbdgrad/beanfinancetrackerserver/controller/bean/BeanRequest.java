@@ -11,4 +11,6 @@ import lombok.NoArgsConstructor;
 @NoArgsConstructor
 public class BeanRequest {
     private String name;
+
+    private Integer country_id;
 }

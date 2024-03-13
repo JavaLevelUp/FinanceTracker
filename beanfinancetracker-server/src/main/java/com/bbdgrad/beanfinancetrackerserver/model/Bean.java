@@ -18,4 +18,6 @@ public class Bean {
     private Integer id;
 
     private String name;
+
+    private Integer country_id;
 }
