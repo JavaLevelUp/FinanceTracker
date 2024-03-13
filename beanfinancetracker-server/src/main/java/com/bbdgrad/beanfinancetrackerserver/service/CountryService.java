@@ -56,7 +56,7 @@ public class CountryService {
         }
         Optional<Country> country = countryRepository.findById(id);
         if(country.isEmpty()){
-            return new ResponseEntity("Country already Exists", HttpStatus.NOT_FOUND);
+            return new ResponseEntity("Country does not Exists", HttpStatus.NOT_FOUND);
         }
         country.get().setName(name);
         countryRepository.save(country.get());
