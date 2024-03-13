@@ -23,9 +23,4 @@ public class User {
     private Integer id;
     private String name;
     private String email;
-    private String password;
-    private Timestamp created_at;
-    @Enumerated
-    private Role role;
-
 }

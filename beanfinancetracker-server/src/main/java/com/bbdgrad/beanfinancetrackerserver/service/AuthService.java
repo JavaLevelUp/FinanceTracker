@@ -27,9 +27,6 @@ public class AuthService {
         var user = User.builder()
                 .name(request.getName())
                 .email(request.getEmail())
-                .password(request.getPassword())
-                .role(request.getRole())
-                .created_at(new Timestamp(System.currentTimeMillis()))
                 .build();
         var savedUser = userRepository.save(user);
 
