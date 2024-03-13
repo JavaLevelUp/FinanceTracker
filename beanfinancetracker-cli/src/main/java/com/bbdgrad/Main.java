@@ -2,24 +2,19 @@ package com.bbdgrad;
 
 import java.io.FileInputStream;
 import java.io.IOException;
-import java.lang.reflect.Type;
 import java.net.URI;
 import java.net.URISyntaxException;
 import java.net.http.HttpClient;
 import java.net.http.HttpRequest;
 import java.net.http.HttpResponse;
-import java.util.ArrayList;
 import java.util.Scanner;
 
-import com.bbdgrad.Controller.CountryController;
+import com.bbdgrad.controller.CountryController;
 import com.bbdgrad.model.AccessToken;
 import com.bbdgrad.model.DeviceVerification;
-import com.bbdgrad.model.Student;
 import com.bbdgrad.model.User;
 import com.google.gson.Gson;
-import com.google.gson.GsonBuilder;
 import com.google.gson.JsonObject;
-import com.google.gson.reflect.TypeToken;
 
 import java.util.Properties;
 
@@ -54,9 +49,7 @@ public class Main {
         do {
             System.out.print("Select an operation:\n" +
                     "0. Exit\n" +
-                    "1. Register\n" +
-                    "2. Login\n" +
-                    "3. GitHub oAuth\n" +
+                    "1. Authenticate\n" +
                     ">> ");
 
             if (scanner.hasNextLine()) {
@@ -67,12 +60,6 @@ public class Main {
                         exiting = true;
                         break;
                     case '1':
-                        register();
-                        break;
-                    case '2':
-                        login();
-                        break;
-                    case '3':
                         authenticate();
                         break;
                     default:
@@ -85,82 +72,82 @@ public class Main {
     }
 
 
-    private static void login() {
-        Scanner scanner = new Scanner(System.in);
-        System.out.print("Enter email: ");
-        String email = scanner.next();
-        System.out.print("Enter password: ");
-        String password = scanner.next();
+//    private static void login() {
+//        Scanner scanner = new Scanner(System.in);
+//        System.out.print("Enter email: ");
+//        String email = scanner.next();
+//        System.out.print("Enter password: ");
+//        String password = scanner.next();
+//
+//        User loginUser = new User(email, password);
+//        String jsonBody = new Gson().toJson(loginUser);
+//        loginUser = null;
+//
+//        try (HttpClient httpClient = HttpClient.newHttpClient()) {
+//            HttpRequest post = HttpRequest.newBuilder()
+//                    .uri(new URI(prop.getProperty("BASE_URL") + "/api/v1/auth/authenticate"))
+//                    .POST(HttpRequest.BodyPublishers.ofString(jsonBody))
+//                    .header("Content-Type", "application/json")
+//                    .build();
+//            jsonBody = null;
+//
+//            HttpResponse<String> response = httpClient.send(post, HttpResponse.BodyHandlers.ofString());
+//            if (response.statusCode() == 200) {
+//                String responseToken = new Gson().fromJson(response.body(), JsonObject.class).get("access_token").getAsString();
+//                prop.setProperty("ACCESS_TOKEN", responseToken);
+//                authenticated = true;
+//                showMainMenu();
+//            } else {
+//                System.out.println("Login failed, please try again.");
+//            }
+//
+//        } catch (URISyntaxException | IOException | InterruptedException e) {
+//            throw new RuntimeException(e);
+//        } catch (NullPointerException e) {
+//            System.out.println("Login failed: " + e.getMessage());
+//            showAuthOptions();
+//        }
+//    }
 
-        User loginUser = new User(email, password);
-        String jsonBody = new Gson().toJson(loginUser);
-        loginUser = null;
-
-        try (HttpClient httpClient = HttpClient.newHttpClient()) {
-            HttpRequest post = HttpRequest.newBuilder()
-                    .uri(new URI(prop.getProperty("BASE_URL") + "/api/v1/auth/authenticate"))
-                    .POST(HttpRequest.BodyPublishers.ofString(jsonBody))
-                    .header("Content-Type", "application/json")
-                    .build();
-            jsonBody = null;
-
-            HttpResponse<String> response = httpClient.send(post, HttpResponse.BodyHandlers.ofString());
-            if (response.statusCode() == 200) {
-                String responseToken = new Gson().fromJson(response.body(), JsonObject.class).get("access_token").getAsString();
-                prop.setProperty("ACCESS_TOKEN", responseToken);
-                authenticated = true;
-                showMainMenu();
-            } else {
-                System.out.println("Login failed, please try again.");
-            }
-
-        } catch (URISyntaxException | IOException | InterruptedException e) {
-            throw new RuntimeException(e);
-        } catch (NullPointerException e) {
-            System.out.println("Login failed: " + e.getMessage());
-            showAuthOptions();
-        }
-    }
-
-    private static void register() {
-        Scanner scanner = new Scanner(System.in);
-        System.out.print("Enter username: ");
-        String username = scanner.next();
-        System.out.print("Enter email: ");
-        String email = scanner.next();
-        System.out.print("Enter password: ");
-        String password = scanner.next();
-        String role = "ADMIN";
-
-        User regUser = new User(username, email, password, role);
-        String jsonBody = new Gson().toJson(regUser);
-        regUser = null;
-
-        try (HttpClient httpClient = HttpClient.newHttpClient()) {
-            HttpRequest post = HttpRequest.newBuilder()
-                    .uri(new URI(prop.getProperty("BASE_URL") + "/api/v1/auth/register"))
-                    .POST(HttpRequest.BodyPublishers.ofString(jsonBody))
-                    .header("Content-Type", "application/json")
-                    .build();
-            jsonBody = null;
-
-            HttpResponse<String> response = httpClient.send(post, HttpResponse.BodyHandlers.ofString());
-            if (response.statusCode() == 200) {
-                String responseToken = new Gson().fromJson(response.body(), JsonObject.class).get("access_token").getAsString();
-                prop.setProperty("ACCESS_TOKEN", responseToken);
-                authenticated = true;
-                showMainMenu();
-            } else {
-                System.out.println("Registration failed, please try again. Status code: " + response.statusCode());
-            }
-
-        } catch (URISyntaxException | IOException | InterruptedException e) {
-            throw new RuntimeException(e);
-        } catch (NullPointerException e) {
-            System.out.println("Registration failed: " + e.getMessage());
-            showAuthOptions();
-        }
-    }
+//    private static void register() {
+//        Scanner scanner = new Scanner(System.in);
+//        System.out.print("Enter username: ");
+//        String username = scanner.next();
+//        System.out.print("Enter email: ");
+//        String email = scanner.next();
+//        System.out.print("Enter password: ");
+//        String password = scanner.next();
+//        String role = "ADMIN";
+//
+//        User regUser = new User(username, email, password, role);
+//        String jsonBody = new Gson().toJson(regUser);
+//        regUser = null;
+//
+//        try (HttpClient httpClient = HttpClient.newHttpClient()) {
+//            HttpRequest post = HttpRequest.newBuilder()
+//                    .uri(new URI(prop.getProperty("BASE_URL") + "/api/v1/auth/register"))
+//                    .POST(HttpRequest.BodyPublishers.ofString(jsonBody))
+//                    .header("Content-Type", "application/json")
+//                    .build();
+//            jsonBody = null;
+//
+//            HttpResponse<String> response = httpClient.send(post, HttpResponse.BodyHandlers.ofString());
+//            if (response.statusCode() == 200) {
+//                String responseToken = new Gson().fromJson(response.body(), JsonObject.class).get("access_token").getAsString();
+//                prop.setProperty("ACCESS_TOKEN", responseToken);
+//                authenticated = true;
+//                showMainMenu();
+//            } else {
+//                System.out.println("Registration failed, please try again. Status code: " + response.statusCode());
+//            }
+//
+//        } catch (URISyntaxException | IOException | InterruptedException e) {
+//            throw new RuntimeException(e);
+//        } catch (NullPointerException e) {
+//            System.out.println("Registration failed: " + e.getMessage());
+//            showAuthOptions();
+//        }
+//    }
 
     private static void showMainMenu() {
         Scanner scanner = new Scanner(System.in);

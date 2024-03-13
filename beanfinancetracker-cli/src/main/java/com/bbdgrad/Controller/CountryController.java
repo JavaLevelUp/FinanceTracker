@@ -1,4 +1,4 @@
-package com.bbdgrad.Controller;
+package com.bbdgrad.controller;
 
 import com.bbdgrad.model.Country;
 import com.google.gson.Gson;
@@ -48,9 +48,6 @@ public class CountryController {
 
         } catch (URISyntaxException | IOException | InterruptedException e) {
             throw new RuntimeException(e);
-        }
-        finally {
-            scanner.close();
         }
     }
 
