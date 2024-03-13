@@ -8,6 +8,7 @@ import org.springframework.http.HttpStatus;
 import org.springframework.http.ResponseEntity;
 import org.springframework.stereotype.Service;
 
+import java.math.BigDecimal;
 import java.util.List;
 import java.util.Optional;
 
@@ -26,7 +27,7 @@ public class CategoryService {
         if (categoryExist.isPresent()) {
             return new ResponseEntity<>("Category already exists", HttpStatus.CONFLICT);
         }
-        Category newCategory = Category.builder().name(categoryRequest.getName()).build();
+        Category newCategory = Category.builder().name(categoryRequest.getName()).monthlyBudget(categoryRequest.getMonthlyBudget()).build();
         categoryRepository.save(newCategory);
         return ResponseEntity.ok().body(newCategory);
     }
@@ -45,15 +46,15 @@ public class CategoryService {
     }
 
 
-    public ResponseEntity<Object> updateCategory(Integer id, String name) {
+    public ResponseEntity<Object> updateCategory(Integer id, BigDecimal monthlyBudget) {
         Optional<Category> category = categoryRepository.findById(id);
         if (category.isEmpty()) {
             return new ResponseEntity<>("Category not found", HttpStatus.NOT_FOUND);
         }
-        if (name == null) {
+        if (monthlyBudget == null) {
             return new ResponseEntity<>("Nothing to update", HttpStatus.BAD_REQUEST);
         }
-        category.get().setName(name);
+        category.get().setMonthlyBudget(monthlyBudget);
         categoryRepository.save(category.get());
         return ResponseEntity.ok().body(category.get());
     }

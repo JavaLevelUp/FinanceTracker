@@ -9,12 +9,12 @@ import java.net.http.HttpRequest;
 import java.net.http.HttpResponse;
 import java.util.Scanner;
 
+import com.bbdgrad.controller.CategoryController;
 import com.bbdgrad.controller.CountryController;
 import com.bbdgrad.model.AccessToken;
+import com.bbdgrad.model.Category;
 import com.bbdgrad.model.DeviceVerification;
-import com.bbdgrad.model.User;
 import com.google.gson.Gson;
-import com.google.gson.JsonObject;
 
 import java.util.Properties;
 
@@ -157,7 +157,7 @@ public class Main {
             System.out.print("\nSelect an operation:\n" +
                     "0. Exit\n" +
                     "1. Country\n" +
-                    "2. Bean\n" +
+                    "2. Category\n" +
                     ">> ");
 
             if (scanner.hasNextLine()) {
@@ -169,6 +169,9 @@ public class Main {
                         break;
                     case '1':
                         showCountryMenu();
+                        break;
+                    case '2':
+                        showCategoryMenu();
                         break;
                     default:
                         System.out.println("Invalid selection.\n");
@@ -219,6 +222,55 @@ public class Main {
                         break;
                     case '6':
                         CountryController.getCountry();
+                        break;
+                    default:
+                        System.out.println("Invalid selection.\n");
+                }
+            } else {
+                System.out.println("Invalid selection.\n");
+            }
+        } while (!exiting);
+    }
+
+    private static void showCategoryMenu() {
+        Scanner scanner = new Scanner(System.in);
+        char input;
+
+        do {
+            System.out.print("\nSelect an operation:\n" +
+                    "0. Exit\n" +
+                    "1. Back\n" +
+                    "2. Create Category\n" +
+                    "3. Update Category\n" +
+                    "4. Delete Category\n" +
+                    "5. Get All Categories\n" +
+                    "6. Get Category\n" +
+                    ">> ");
+
+            if (scanner.hasNextLine()) {
+                input = scanner.nextLine().charAt(0);
+                switch (input) {
+                    case '0':
+                        System.out.println("Thank you for using Bean Finance Tracker.");
+                        exiting = true;
+                        break;
+                    case '1':
+                        showMainMenu();
+                        return;
+                    case '2':
+                        CategoryController.createCategory();
+                        break;
+                    case '3':
+                        CategoryController.updateCategory();
+                        break;
+                    case '4':
+                        CategoryController.deleteCategory();
+                        break;
+                    case '5':
+                        CategoryController.getAllCategories();
+                        break;
+                    case '6':
+                        CategoryController.getCategory();
                         break;
                     default:
                         System.out.println("Invalid selection.\n");
