@@ -12,6 +12,7 @@ import java.util.Scanner;
 import com.bbdgrad.controller.CategoryController;
 import com.bbdgrad.controller.CountryController;
 import com.bbdgrad.controller.BeanController;
+import com.bbdgrad.controller.BatchController;
 import com.bbdgrad.model.AccessToken;
 import com.bbdgrad.model.Category;
 import com.bbdgrad.model.DeviceVerification;
@@ -29,6 +30,8 @@ public class Main {
 
         try (FileInputStream input = new FileInputStream("env.properties")) {
             prop.load(input);
+            //TODO: remove this
+            prop.setProperty("ACCESS_TOKEN", "");
         } catch (IOException ex) {
             throw new RuntimeException("Failed to load environment properties", ex);
         }
@@ -61,7 +64,9 @@ public class Main {
                         exiting = true;
                         break;
                     case '1':
-                        authenticate();
+                        //TODO: change this back
+                        //authenticate();
+                        showMainMenu();
                         break;
                     default:
                         System.out.println("Invalid selection.\n");
@@ -160,6 +165,7 @@ public class Main {
                     "1. Country\n" +
                     "2. Category\n" +
                     "3. Bean\n" +
+                    "4. Batch\n" +
                     ">> ");
 
             if (scanner.hasNextLine()) {
@@ -177,6 +183,58 @@ public class Main {
                         break;
                     case '3':
                         showBeanMenu();
+                        break;
+                    case '4':
+                        showBatchMenu();
+                        break;
+                    default:
+                        System.out.println("Invalid selection.\n");
+                }
+            } else {
+                System.out.println("Invalid selection.\n");
+            }
+        } while (!exiting);
+    }
+
+    private static void showBatchMenu() {
+        Scanner scanner = new Scanner(System.in);
+        char input;
+
+        do {
+            System.out.print("\nSelect an operation:\n" +
+                    "0. Exit\n" +
+                    "1. Back\n" +
+                    "2. Create Batch\n" +
+                    "3. Update Batch\n" +
+                    "4. Delete Batch\n" +
+                    "5. Get All Batches\n" +
+                    "6. Get Batch\n" +
+                    ">> ");
+
+            if (scanner.hasNextLine()) {
+                input = scanner.nextLine().charAt(0);
+                switch (input) {
+                    case '0':
+                        System.out.println("Thank you for using Bean Finance Tracker.");
+                        exiting = true;
+                        break;
+                    case '1':
+                        showMainMenu();
+                        return;
+                    case '2':
+                        BatchController.createBatch();
+                        break;
+                    case '3':
+                        BatchController.updateBatch();
+                        break;
+                    case '4':
+                        BatchController.deleteBatch();
+                        break;
+                    case '5':
+                        BatchController.getAllBatches();
+                        break;
+                    case '6':
+                        BatchController.getBatch();
                         break;
                     default:
                         System.out.println("Invalid selection.\n");
@@ -365,6 +423,7 @@ public class Main {
                     success = true;
                     System.out.println("Successfully authenticated!");
                     prop.setProperty("ACCESS_TOKEN", accessToken.access_token());
+                    System.out.println(prop.getProperty("ACCESS_TOKEN"));
                     authenticated = true;
                     showMainMenu();
                 }

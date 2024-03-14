@@ -72,4 +72,5 @@ inputs = {
     env_vars = {
         PORT = 8080
     }
+    application_port = 8080
 }
