@@ -41,6 +41,11 @@ jobs:
             sleep 1
           done
 
+      # Download SQL script from S3 bucket
+      - name: Download SQL script from S3
+        run: |
+          aws s3 cp s3://${{secrets.ENV_BUCKET_NAME}}/BeansFinancialTrackerTables.sql /tmp/BeansFinancialTrackerTables.sql          
+
       # Run SQL scripts on PostgreSQL container
       - name: Run SQL scripts on PostgreSQL container
         run: |
