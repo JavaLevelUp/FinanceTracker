@@ -11,6 +11,7 @@ import java.util.Scanner;
 
 import com.bbdgrad.controller.CategoryController;
 import com.bbdgrad.controller.CountryController;
+import com.bbdgrad.controller.BeanController;
 import com.bbdgrad.model.AccessToken;
 import com.bbdgrad.model.Category;
 import com.bbdgrad.model.DeviceVerification;
@@ -158,6 +159,7 @@ public class Main {
                     "0. Exit\n" +
                     "1. Country\n" +
                     "2. Category\n" +
+                    "3. Bean\n" +
                     ">> ");
 
             if (scanner.hasNextLine()) {
@@ -173,6 +175,9 @@ public class Main {
                     case '2':
                         showCategoryMenu();
                         break;
+                    case '3':
+                        showBeanMenu();
+                        break;
                     default:
                         System.out.println("Invalid selection.\n");
                 }
@@ -182,6 +187,54 @@ public class Main {
         } while (!exiting);
     }
 
+    private static void showBeanMenu() {
+        Scanner scanner = new Scanner(System.in);
+        char input;
+
+        do {
+            System.out.print("\nSelect an operation:\n" +
+                    "0. Exit\n" +
+                    "1. Back\n" +
+                    "2. Create Bean\n" +
+                    "3. Update Bean\n" +
+                    "4. Delete Bean\n" +
+                    "5. Get All Beans\n" +
+                    "6. Get Bean\n" +
+                    ">> ");
+
+            if (scanner.hasNextLine()) {
+                input = scanner.nextLine().charAt(0);
+                switch (input) {
+                    case '0':
+                        System.out.println("Thank you for using Bean Finance Tracker.");
+                        exiting = true;
+                        break;
+                    case '1':
+                        showMainMenu();
+                        return;
+                    case '2':
+                        BeanController.createBean();
+                        break;
+                    case '3':
+                        BeanController.updateBean();
+                        break;
+                    case '4':
+                        BeanController.deleteBean();
+                        break;
+                    case '5':
+                        BeanController.getAllBeans();
+                        break;
+                    case '6':
+                        BeanController.getBean();
+                        break;
+                    default:
+                        System.out.println("Invalid selection.\n");
+                }
+            } else {
+                System.out.println("Invalid selection.\n");
+            }
+        } while (!exiting);
+    }
 
     private static void showCountryMenu() {
         Scanner scanner = new Scanner(System.in);
