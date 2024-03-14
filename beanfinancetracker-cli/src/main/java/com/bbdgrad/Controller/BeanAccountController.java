@@ -56,7 +56,7 @@ public class BeanAccountController {
 
         } catch (URISyntaxException | IOException | InterruptedException e) {
             throw new RuntimeException(e);
-        } catch (NumberFormatException | DateTimeParseException e) {
+        } catch (NumberFormatException e) {
             System.out.println("Invalid input");
         }
     }

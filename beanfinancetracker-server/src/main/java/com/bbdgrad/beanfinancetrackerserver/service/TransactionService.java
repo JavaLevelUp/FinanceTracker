@@ -49,10 +49,10 @@ public class TransactionService {
                 return new ResponseEntity("Bean Account is not found", HttpStatus.NOT_FOUND);
             }
             if (batchRepository.findById(transactionRequest.getBatch_id()).isEmpty()) {
-                return new ResponseEntity("Batch does noe exist", HttpStatus.NOT_FOUND);
+                return new ResponseEntity("Batch does not exist", HttpStatus.NOT_FOUND);
             }
             if (categoryRepository.findById(transactionRequest.getCategory_id()).isEmpty()) {
-                return new ResponseEntity("Category does note exist", HttpStatus.NOT_FOUND);
+                return new ResponseEntity("Category does not exist", HttpStatus.NOT_FOUND);
             }
             BeanAccount updateBeanAccount = beanAccountRepository.findById(transactionRequest.getBean_account_id()).get();
             BigDecimal oldCurrentAmount = updateBeanAccount.getCurrent_balance();
