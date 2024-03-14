@@ -79,9 +79,13 @@ jobs:
       - name: Run SQL scripts on PostgreSQL container
         run: |
           # Wait for PostgreSQL to start
-          sleep 10s
+          until sudo docker exec postgres pg_isready -U postgres; do
+            echo "Waiting for PostgreSQL to start..."
+            sleep 1
+          done
           # Run SQL scripts
-          sudo psql -h localhost -U postgres -d dbname -f database/SQL/BeansFinancialTrackerTables.sql
+          sudo docker exec -i postgres psql -U postgres -d dbname -f database/SQL/BeansFinancialTrackerTables.sql
+
 
       # Run Unit Tests
       - name: Run Unit Tests
