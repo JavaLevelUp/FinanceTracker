@@ -1,0 +1,52 @@
+name: 'Deploy Client GitHub Action'
+on:
+  push:
+    paths: 
+      - "beanfinancetracker-cli/**"
+    branches:
+      - main
+      
+  workflow_dispatch:
+  
+permissions:
+  id-token: write
+  contents: read
+
+jobs:
+  deploy:
+    runs-on: ubuntu-latest
+    defaults:
+      run:
+        working-directory: ./beanfinancetracker-cli
+    steps:
+    # checkout repo
+    - name: 'Checkout'
+      uses: actions/checkout@main
+
+    # configure credentials
+    - name: Configure AWS Credentials
+      uses: aws-actions/configure-aws-credentials@v4
+      with:
+        role-to-assume: ${{secrets.AWS_ASSUME_ROLE}}
+        aws-region: "eu-west-1"
+
+    - name: Set up AWS CLI
+      uses: unfor19/install-aws-cli-action
+
+    
+    # set up Java
+    - name: Set up JDK 21
+      uses: actions/setup-java@v3
+      with:
+        java-version: '21'
+        distribution: 'corretto'
+        cache: maven
+
+    # Pull environment config from S3
+    - name: Retrieve environment variables file
+      run: |
+        aws s3 cp s3://${{secrets.ENV_BUCKET_NAME}}/${{secrets.CLIENT_ENV_OBJECT_KEY}}/env.properties
+
+    # Build package
+    - name: Build JAR
+      run: mvn -B package

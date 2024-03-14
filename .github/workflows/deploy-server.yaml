@@ -1,0 +1,92 @@
+name: 'Deploy Server GitHub Action'
+on:
+  push:
+    paths: 
+      - "beanfinancetracker-server/**"
+    branches:
+      - main
+      
+  workflow_dispatch:
+  
+permissions:
+  id-token: write
+  contents: read
+
+jobs:
+  deploy:
+    runs-on: ubuntu-latest
+    defaults:
+      run:
+        working-directory: ./beanfinancetracker-server
+    steps:
+    # checkout repo
+    - name: 'Checkout'
+      uses: actions/checkout@main
+
+    # configure credentials
+    - name: Configure AWS Credentials
+      uses: aws-actions/configure-aws-credentials@v4
+      with:
+        role-to-assume: ${{secrets.AWS_ASSUME_ROLE}}
+        aws-region: "eu-west-1"
+
+    - name: Set up AWS CLI
+      uses: unfor19/install-aws-cli-action
+
+    - name: Store AWS keys as output
+      id: keys
+      run:
+        echo "AWS_ACCESS_KEY_ID=$AWS_ACCESS_KEY_ID" >> $GITHUB_ENV
+        echo "AWS_SECRET_ACCESS_KEY=$AWS_SECRET_ACCESS_KEY" >> $GITHUB_ENV
+    
+    # set up Java
+    - name: Set up JDK 21
+      uses: actions/setup-java@v3
+      with:
+        java-version: '21'
+        distribution: 'corretto'
+        cache: maven
+
+    # Pull environment config from S3
+    - name: Retrieve environment variables file
+      run: |
+        echo access_key: $AWS_ACCESS_KEY_ID
+        aws s3 cp s3://${{secrets.ENV_BUCKET_NAME}}/${{secrets.SERVER_ENV_OBJECT_KEY}}/env.properties
+
+    # Test
+    - name: Run Unit Tests
+      id: mvntest
+      run: mvn test
+    
+    - name: Confirm Unit Tests Passed
+      if: steps.mvntest.outcome == 'failure'
+      run: exit 1
+
+    # Build package
+    - name: Build JAR
+      run: mvn -B package -Dmaven.test.skip=true
+
+    # Generate version name from time
+    - name: Generate Version name
+      id: version-tag
+      run: |
+          echo "version=app-$(date '+%y%m%d_%H%M%s')" >> $GITHUB_ENV
+
+    # add entire working directory to a zip
+    - name: Zip
+      run: |
+        zip -r ${{env.version}} . 
+    # Upload the zip to the bucket created to house EB deployment packages
+    - name: Upload to S3
+      run: |
+        aws s3 cp ${{env.version}}.zip s3://${{secrets.EB_BUCKET_NAME}}/${{secrets.EB_BUCKET_PATH}}/${{env.version}}.zip
+
+    # create an application version tag pointing to the the zip in s3
+    - name: Create new application version
+      run: |
+        aws elasticbeanstalk create-application-version --application-name finance-tracker --version-label ${{env.version}} --source-bundle S3Bucket=${{secrets.EB_BUCKET_NAME}},S3Key=${{secrets.EB_BUCKET_PATH}}/${{env.version}}.zip
+   
+    # deploy the new version to EB
+    - name: Deploy to EB
+      run: |
+        aws elasticbeanstalk update-environment --environment-name finance-tracker --version-label ${{env.version}}

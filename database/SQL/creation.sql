@@ -30,7 +30,6 @@ CREATE TABLE "bean_account" (
 --comment: Create transaction table
 CREATE TABLE "transaction" (
   "id" integer PRIMARY KEY,
-  "user_id" integer,
   "bean_account_id" integer,
   "batch_id" integer,
   "category_id" integer,
@@ -67,42 +66,40 @@ CREATE TABLE "batch" (
 );
 --rollback DROP TABLE "batch";
 
-
 COMMENT ON TABLE "batch" IS 'Optional in transaction';
-
 
 --changeset rfarisani:ftdb:alterTable:bean_account_FK_user
 --comment: Add user.id as FK to bean_account
 ALTER TABLE "bean_account"
-ADD CONSTRAINT bean_account_FK_user FOREIGN KEY ("user_id") REFERENCES "user" ("id")
+ADD CONSTRAINT bean_account_FK_user FOREIGN KEY ("user_id") REFERENCES "user" ("id");
 --rollback ALTER TABLE "bean_account" DROP CONSTRAINT bean_account_FK_user
 
 --changeset rfarisani:ftdb:alterTable:transaction_FK_category
 --comment: Add category.id as FK to transaction
 ALTER TABLE "transaction"
-ADD CONSTRAINT transaction_FK_category FOREIGN KEY ("category_id") REFERENCES "category" ("id")
+ADD CONSTRAINT transaction_FK_category FOREIGN KEY ("category_id") REFERENCES "category" ("id");
 --rollback ALTER TABLE "transaction" DROP CONSTRAINT transaction_FK_category
 
 --changeset rfarisani:ftdb:alterTable:transaction_FK_bean_account
 --comment: Add bean_account.id as FK to transaction
 ALTER TABLE "transaction"
-ADD CONSTRAINT transaction_FK_bean_account FOREIGN KEY ("bean_account_id") REFERENCES "bean_account" ("id")
+ADD CONSTRAINT transaction_FK_bean_account FOREIGN KEY ("bean_account_id") REFERENCES "bean_account" ("id");
 --rollback ALTER TABLE "transaction" DROP CONSTRAINT transaction_FK_bean_account
 
 --changeset rfarisani:ftdb:alterTable:bean_FK_country
 --comment: Add country.id as FK to bean
 ALTER TABLE "bean"
-ADD CONSTRAINT bean_FK_country FOREIGN KEY ("country_id") REFERENCES "country" ("id")
+ADD CONSTRAINT bean_FK_country FOREIGN KEY ("country_id") REFERENCES "country" ("id");
 --rollback ALTER TABLE "bean" DROP CONSTRAINT bean_FK_country
 
 --changeset rfarisani:ftdb:alterTable:batch_FK_bean
 --comment: Add bean.id as FK to batch
 ALTER TABLE "batch"
-ADD CONSTRAINT batch_FK_bean FOREIGN KEY ("bean_id") REFERENCES "bean" ("id")
+ADD CONSTRAINT batch_FK_bean FOREIGN KEY ("bean_id") REFERENCES "bean" ("id");
 --rollback ALTER TABLE "batch" DROP CONSTRAINT batch_FK_bean
 
 --changeset rfarisani:ftdb:alterTable:transaction_FK_batch
 --comment: Add batch.id as FK to transaction
 ALTER TABLE "transaction"
-ADD CONSTRAINT transaction_FK_batch FOREIGN KEY ("batch_id") REFERENCES "batch" ("id")
+ADD CONSTRAINT transaction_FK_batch FOREIGN KEY ("batch_id") REFERENCES "batch" ("id");
 --rollback ALTER TABLE "transaction" DROP CONSTRAINT transaction_FK_batch
