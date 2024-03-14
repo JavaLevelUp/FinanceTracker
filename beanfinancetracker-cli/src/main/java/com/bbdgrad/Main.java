@@ -20,15 +20,12 @@ import java.util.Properties;
 public class Main {
 
     public static final Properties prop = new Properties();
-    public static String ACCESS_TOKEN = "";
-    public static final String BASE_URL = "http://localhost:8080";
-    public static final String CLIENT_ID = "a74454269fa57801aff3";
     private static boolean authenticated = false;
     private static boolean exiting = false;
 
     public static void main(String[] args) {
 
-        try (FileInputStream input = new FileInputStream("env.properties")) {
+        try (FileInputStream input = new FileInputStream("src/main/resources/env.properties")) {
             prop.load(input);
             //prop.setProperty("ACCESS_TOKEN", "");
         } catch (IOException ex) {
@@ -572,7 +569,6 @@ public class Main {
                     success = true;
                     System.out.println("Successfully authenticated!");
                     prop.setProperty("ACCESS_TOKEN", accessToken.access_token());
-                    ACCESS_TOKEN = accessToken.access_token();
                     System.out.println(prop.getProperty("ACCESS_TOKEN"));
                     authenticated = true;
                     showMainMenu();
