@@ -42,6 +42,8 @@ class CategoryControllerTest {
     @InjectMocks
     private CategoryController categoryController;
 
+
+    // Adding this line for testing
     @Test
     void testGetCategories() {
 
