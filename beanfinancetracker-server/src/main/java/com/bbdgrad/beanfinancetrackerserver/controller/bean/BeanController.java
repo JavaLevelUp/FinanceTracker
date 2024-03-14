@@ -28,17 +28,17 @@ public class BeanController {
     }
 
     @GetMapping("/{beanId}")
-    public ResponseEntity<Bean> getCountry(@PathVariable("beanId") Integer beanId){
+    public ResponseEntity<Bean> getBean(@PathVariable("beanId") Integer beanId){
         return beanService.getBean(beanId);
     }
 
     @DeleteMapping("/delete/{beanId}")
-    public ResponseEntity<String> removeCountry(@PathVariable("beanId") int beanId){
+    public ResponseEntity<String> removeBean(@PathVariable("beanId") int beanId){
         return beanService.removeBean(beanId);
     }
 
     @PutMapping("/update/{beanId}")
-    public ResponseEntity<Bean> updateCountry(@PathVariable("beanId") Integer beanId, @RequestParam(required = false) String name, @RequestParam(required = false) Optional<Integer> country_id)  {
+    public ResponseEntity<Bean> updateBean(@PathVariable("beanId") Integer beanId, @RequestParam(required = false) String name, @RequestParam(required = false) Optional<Integer> country_id)  {
         return beanService.updateBean(beanId, name, country_id);
     }
 }

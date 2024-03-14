@@ -52,15 +52,13 @@ public class BatchController {
                 System.out.println("Successfully added batch");
             } else if (response.statusCode() == 400) {
                 System.out.println("Date format error");
-            }
-            else {
+            } else {
                 System.out.println("API request failed. Status code: " + response.statusCode());
             }
 
         } catch (URISyntaxException | IOException | InterruptedException e) {
             throw new RuntimeException(e);
-        }
-        catch (NumberFormatException | DateTimeParseException e) {
+        } catch (NumberFormatException | DateTimeParseException e) {
             System.out.println("Invalid input");
         }
     }
@@ -86,16 +84,14 @@ public class BatchController {
             if (!weight.isBlank() && !batch_date.isBlank()) {
                 float weightValue = Float.parseFloat(weight);
                 weight = "&weight=" + weightValue;
-            }
-            else if (!weight.isBlank()) {
+            } else if (!weight.isBlank()) {
                 float weightValue = Float.parseFloat(weight);
                 weight = "?weight=" + weightValue;
             }
             if (!beanId.isBlank() && (!weight.isBlank() || !batch_date.isBlank())) {
                 int beanIdValue = Integer.parseInt(beanId);
                 beanId = "?bean_id=" + beanIdValue;
-            }
-            else if (!beanId.isBlank()) {
+            } else if (!beanId.isBlank()) {
                 float weightValue = Float.parseFloat(beanId);
                 weight = "?weight=" + weightValue;
             }
@@ -111,14 +107,11 @@ public class BatchController {
                 HttpResponse<String> response = httpClient.send(request, HttpResponse.BodyHandlers.ofString());
                 if (response.statusCode() == 200) {
                     System.out.println("Successfully updated batch");
-                }
-                else if (response.statusCode() == 404) {
+                } else if (response.statusCode() == 404) {
                     System.out.println("Batch not found");
-                }
-                else if (response.statusCode() == 400) {
+                } else if (response.statusCode() == 400) {
                     System.out.println("Date format error");
-                }
-                else {
+                } else {
                     System.out.println("API request failed. Status code: " + response.statusCode());
                 }
 
@@ -131,38 +124,33 @@ public class BatchController {
     }
 
     public static void deleteBatch() {
-        try {
-            Scanner scanner = new Scanner(System.in);
-            System.out.print("Are you sure? (y): ");
-            String input = scanner.nextLine();
-            if (!input.equals("y")) {
-                return;
+        Scanner scanner = new Scanner(System.in);
+        System.out.print("Are you sure? (y): ");
+        String input = scanner.nextLine();
+        if (!input.equals("y")) {
+            return;
+        }
+
+        System.out.print("Enter batch id: ");
+        String id = scanner.nextLine();
+
+        try (HttpClient httpClient = HttpClient.newHttpClient()) {
+            HttpRequest request = HttpRequest.newBuilder()
+                    .uri(new URI(prop.getProperty("BASE_URL") + "/api/v1/batch/delete/" + id))
+                    .DELETE()
+                    .header("Content-Type", "application/json")
+                    .header("Authorization", "Bearer " + prop.getProperty("ACCESS_TOKEN"))
+                    .build();
+
+            HttpResponse<String> response = httpClient.send(request, HttpResponse.BodyHandlers.ofString());
+            if (response.statusCode() == 200) {
+                System.out.println("Successfully deleted batch");
+            } else {
+                System.out.println("API request failed. Status code: " + response.statusCode());
             }
 
-            System.out.print("Enter batch id: ");
-            String id = scanner.nextLine();
-
-            try (HttpClient httpClient = HttpClient.newHttpClient()) {
-                HttpRequest request = HttpRequest.newBuilder()
-                        .uri(new URI(prop.getProperty("BASE_URL") + "/api/v1/batch/delete/" + id))
-                        .DELETE()
-                        .header("Content-Type", "application/json")
-                        .header("Authorization", "Bearer " + prop.getProperty("ACCESS_TOKEN"))
-                        .build();
-
-                HttpResponse<String> response = httpClient.send(request, HttpResponse.BodyHandlers.ofString());
-                if (response.statusCode() == 200) {
-                    System.out.println("Successfully deleted batch");
-                }
-                else {
-                    System.out.println("API request failed. Status code: " + response.statusCode());
-                }
-
-            } catch (URISyntaxException | IOException | InterruptedException e) {
-                throw new RuntimeException(e);
-            }
-        } catch (NumberFormatException e) {
-            System.out.println("Invalid input");
+        } catch (URISyntaxException | IOException | InterruptedException e) {
+            throw new RuntimeException(e);
         }
     }
 
@@ -178,13 +166,13 @@ public class BatchController {
             HttpResponse<String> response = httpClient.send(getRequest, HttpResponse.BodyHandlers.ofString());
             if (response.statusCode() == 200) {
                 Gson gson = new Gson();
-                Type listOfBatches = new TypeToken<ArrayList<Batch>>() {}.getType();
+                Type listOfBatches = new TypeToken<ArrayList<Batch>>() {
+                }.getType();
                 ArrayList<Batch> batchList = gson.fromJson(response.body(), listOfBatches);
                 for (Batch b : batchList) {
                     System.out.println(b);
                 }
-            }
-            else {
+            } else {
                 System.out.println("API request failed. Status code: " + response.statusCode());
             }
         } catch (IOException | InterruptedException | URISyntaxException e) {
@@ -210,11 +198,9 @@ public class BatchController {
                 Gson gson = new Gson();
                 Batch batch = gson.fromJson(response.body(), Batch.class);
                 System.out.println(batch);
-            }
-            else if (response.statusCode() == 404) {
+            } else if (response.statusCode() == 404) {
                 System.out.println("Batch not found");
-            }
-            else {
+            } else {
                 System.out.println("API request failed. Status code: " + response.statusCode());
             }
         } catch (IOException | InterruptedException | URISyntaxException e) {

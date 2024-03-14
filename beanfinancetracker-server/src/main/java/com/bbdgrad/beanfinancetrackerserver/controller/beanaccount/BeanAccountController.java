@@ -17,27 +17,27 @@ public class BeanAccountController {
     private final BeanAccountService beanAccountService;
 
     @GetMapping()
-    public ResponseEntity<List<BeanAccount>> getBatches() {
+    public ResponseEntity<List<BeanAccount>> getBeanAccounts() {
         return beanAccountService.getBeanAccounts();
     }
 
     @PostMapping
-    public ResponseEntity<BeanAccount> registerBatch(@RequestBody BeanAccountRequest beanAccountRequest) {
+    public ResponseEntity<BeanAccount> registerBeanAccount(@RequestBody BeanAccountRequest beanAccountRequest) {
         return beanAccountService.registerBeanAccount(beanAccountRequest);
     }
 
     @GetMapping("/{beanAccountId}")
-    public ResponseEntity<BeanAccount> getBatch(@PathVariable("beanAccountId") Integer beanAccountId) {
+    public ResponseEntity<BeanAccount> getBeanAccount(@PathVariable("beanAccountId") Integer beanAccountId) {
         return beanAccountService.getBeanAccount(beanAccountId);
     }
 
     @DeleteMapping("/delete/{beanAccountId}")
-    public ResponseEntity<String> removeBatch(@PathVariable("beanAccountId") int beanAccountId) {
+    public ResponseEntity<String> removeBeanAccount(@PathVariable("beanAccountId") int beanAccountId) {
         return beanAccountService.removeBeanAccount(beanAccountId);
     }
 
     @PutMapping("/update/{beanAccountId}")
-    public ResponseEntity<BeanAccount> updateCategory(@PathVariable("beanAccountId") Integer beanAccountId,
+    public ResponseEntity<BeanAccount> updateBeanAccount(@PathVariable("beanAccountId") Integer beanAccountId,
                                                       @RequestParam(required = false) Optional<Integer> user_id,
                                                       @RequestParam(required = false) Optional<String> account_name,
                                                       @RequestParam(required = false) Optional<BigDecimal> current_balance) {
