@@ -6,19 +6,15 @@ on:
       - main
       - 'testingcontrollersbranch'
 
-permissions:
-  id-token: write
-  contents: read
-
 jobs:
   testing:
     runs-on: ubuntu-latest
     defaults:
       run:
-        working-directory: ./beanfinancetracker-server
+        working-directory: ${{ github.workspace }}
     steps:
       - name: Checkout
-        uses: actions/checkout@main
+        uses: actions/checkout@v2
 
       # Update package lists and resolve dependency issues
       - name: Update package lists and resolve dependency issues
@@ -45,15 +41,14 @@ jobs:
             sleep 1
           done
 
-      # Download SQL script from S3 bucket
-      - name: Download SQL script from S3
+      # Copy SQL script to PostgreSQL container
+      - name: Copy SQL script to PostgreSQL container
         run: |
-          aws s3 cp s3://${{secrets.ENV_BUCKET_NAME}}/BeansFinancialTrackerTables.sql /tmp/BeansFinancialTrackerTables.sql          
+          sudo docker cp ./database/SQL/BeansFinancialTrackerTables.sql postgres-container:/tmp/BeansFinancialTrackerTables.sql
 
       # Run SQL scripts on PostgreSQL container
       - name: Run SQL scripts on PostgreSQL container
         run: |
-          sudo docker cp $GITHUB_WORKSPACE/database/BeansFinancialTrackerTables.sql postgres-container:/tmp
           sudo docker exec -i postgres-container psql -U postgres -d FinancialTrackerBeans -f /tmp/BeansFinancialTrackerTables.sql
 
       # Run Unit Tests
