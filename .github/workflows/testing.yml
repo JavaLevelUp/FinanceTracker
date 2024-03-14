@@ -1,5 +1,9 @@
 name: Java Unit/Integration Testing with Maven
 
+permissions:
+  id-token: write
+  contents: read
+
 on:
   push:
   pull_request:
