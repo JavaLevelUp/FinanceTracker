@@ -97,8 +97,9 @@ class CategoryControllerTest {
 
         verify(categoryService, times(1)).getCategory(1);
     }
+    //
 
-
+    // 
     @Test
     void testCategoriesUpdate(){
         try {
