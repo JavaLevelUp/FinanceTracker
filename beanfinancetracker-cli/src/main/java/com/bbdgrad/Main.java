@@ -165,6 +165,7 @@ public class Main {
                     "4. Manage Batches\n" +
                     "5. Manage Users\n" +
                     "6. Manage Accounts\n" +
+                    "7. Manage Transactions\n" +
                     ">> ");
 
             if (scanner.hasNextLine()) {
@@ -191,6 +192,50 @@ public class Main {
                         break;
                     case '6':
                         showAccountMenu();
+                        break;
+                    case '7':
+                        showTransactionMenu();
+                        break;
+                    default:
+                        System.out.println("Invalid selection.\n");
+                }
+            } else {
+                System.out.println("Invalid selection.\n");
+            }
+        } while (!exiting);
+    }
+
+    private static void showTransactionMenu() {
+        Scanner scanner = new Scanner(System.in);
+        char input;
+
+        do {
+            System.out.print("\nSelect an operation:\n" +
+                    "0. Exit\n" +
+                    "1. Back\n" +
+                    "2. Create Transaction\n" +
+                    "3. Get All Transactions For User\n" +
+                    "4. Get Transaction\n" +
+                    ">> ");
+
+            if (scanner.hasNextLine()) {
+                input = scanner.nextLine().charAt(0);
+                switch (input) {
+                    case '0':
+                        System.out.println("Thank you for using Bean Finance Tracker.");
+                        exiting = true;
+                        break;
+                    case '1':
+                        showMainMenu();
+                        return;
+                    case '2':
+                        TransactionController.createTransaction();
+                        break;
+                    case '3':
+                        TransactionController.getAllTransactions();
+                        break;
+                    case '4':
+                        TransactionController.getTransaction();
                         break;
                     default:
                         System.out.println("Invalid selection.\n");
