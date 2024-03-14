@@ -41,7 +41,7 @@ jobs:
     # Pull environment config from S3
     - name: Retrieve environment variables file
       run: |
-        aws s3 cp s3://${{secrets.ENV_BUCKET_NAME}}/${{secrets.SERVER_ENV_OBJECT_KEY}} ./env.properties
+        aws s3 cp s3://${{secrets.ENV_BUCKET_NAME}}/${{secrets.TEST_SERVER_ENV_OBJECT_KEY}}/env.properties
   
     - name: Run Unit Tests
       run: mvn test
