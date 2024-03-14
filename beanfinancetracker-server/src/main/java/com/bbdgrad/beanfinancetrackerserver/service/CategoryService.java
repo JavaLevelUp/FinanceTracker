@@ -44,7 +44,6 @@ public class CategoryService {
         return category.map(ResponseEntity::ok).orElseGet(() -> new ResponseEntity<>(HttpStatus.NOT_FOUND));
     }
 
-
     public ResponseEntity<Object> updateCategory(Integer id, String name) {
         Optional<Category> category = categoryRepository.findById(id);
         if (category.isEmpty()) {
