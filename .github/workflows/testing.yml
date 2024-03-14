@@ -66,4 +66,5 @@ jobs:
           echo "POSTGRES_DB=${{ secrets.TEST_POSTGRES_DB }}" > env.properties
           echo "POSTGRES_USER=${{ secrets.TEST_POSTGRES_USER }}" >> env.properties
           echo "POSTGRES_PASSWORD=${{ secrets.TEST_POSTGRES_PASSWORD }}" >> env.properties
+          echo "POSTGRES_HOST=localhost" >> env.properties
           mvn test
