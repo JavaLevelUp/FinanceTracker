@@ -67,9 +67,7 @@ public class BeanService {
         if(name != null){
             bean.get().setName(name);
         }
-        if(country_id.isPresent()){
-            bean.get().setCountry_id(country_id.get());
-        }
+        country_id.ifPresent(integer -> bean.get().setCountry_id(integer));
 
         beanRepository.save(bean.get());
         return ResponseEntity.ok().body(bean.get());
