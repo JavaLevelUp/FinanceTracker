@@ -7,6 +7,7 @@ permissions:
 on:
   push:
     branches:
+      - main
       - 'testingcontrollersbranch'
 
 jobs:
@@ -35,7 +36,11 @@ jobs:
         ports:
           # Maps tcp port 5432 on service container to the host
           - 5432:5432
-          
+
+    steps:
+      # Empty step to satisfy syntax
+      - name: Placeholder Step
+        run: echo "Placeholder step"
 
   testing:
     runs-on: ubuntu-latest
