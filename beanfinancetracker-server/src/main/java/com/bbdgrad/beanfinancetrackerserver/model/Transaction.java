@@ -22,7 +22,6 @@ public class Transaction {
     @Id
     @GeneratedValue
     private Integer id;
-    private Integer user_id;
     private Integer bean_account_id;
     private Integer batch_id;
     private Integer category_id;

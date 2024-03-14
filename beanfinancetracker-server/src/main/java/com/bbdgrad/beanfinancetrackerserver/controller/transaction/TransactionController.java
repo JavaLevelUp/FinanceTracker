@@ -17,9 +17,9 @@ import java.util.Optional;
 public class TransactionController {
     private final TransactionService transactionService;
 
-    @GetMapping()
-    public ResponseEntity<List<Transaction>> getTransactions() {
-        return transactionService.getTransactions();
+    @GetMapping("/getTransactions/{userId}")
+    public ResponseEntity<List<Transaction>> getTransactions(@PathVariable("userId") Integer userId) {
+        return transactionService.getTransactionsFromUser(userId);
     }
 
     @PostMapping
@@ -39,14 +39,13 @@ public class TransactionController {
 
     @PutMapping("/update/{transactionId}")
     public ResponseEntity<Transaction> updateTransaction(@PathVariable("transactionId") Integer transactionId,
-                                                   @RequestParam(required = false) Optional<Integer> user_id,
                                                    @RequestParam(required = false) Optional<Integer> bean_account_id,
                                                    @RequestParam(required = false) Optional<Integer> batch_id,
                                                    @RequestParam(required = false) Optional<Integer> category_id,
                                                    @RequestParam(required = false) Optional<Boolean> is_outgoing,
                                                    @RequestParam(required = false) Optional<BigDecimal> amount,
                                                    @RequestParam(required = false) Optional<String> transaction) {
-        return transactionService.updateTransaction(transactionId, user_id, bean_account_id, batch_id, category_id, is_outgoing, amount, transaction);
+        return transactionService.updateTransaction(transactionId, bean_account_id, batch_id, category_id, is_outgoing, amount, transaction);
     }
 
 }

@@ -2,10 +2,7 @@ package com.bbdgrad.beanfinancetrackerserver.service;
 
 import com.bbdgrad.beanfinancetrackerserver.controller.batch.BatchRequest;
 import com.bbdgrad.beanfinancetrackerserver.controller.transaction.TransactionRequest;
-import com.bbdgrad.beanfinancetrackerserver.model.Batch;
-import com.bbdgrad.beanfinancetrackerserver.model.Bean;
-import com.bbdgrad.beanfinancetrackerserver.model.Transaction;
-import com.bbdgrad.beanfinancetrackerserver.model.User;
+import com.bbdgrad.beanfinancetrackerserver.model.*;
 import com.bbdgrad.beanfinancetrackerserver.repository.*;
 import lombok.RequiredArgsConstructor;
 import org.springframework.http.HttpStatus;
@@ -15,6 +12,7 @@ import org.springframework.stereotype.Service;
 import java.math.BigDecimal;
 import java.time.LocalDateTime;
 import java.time.format.DateTimeFormatter;
+import java.util.ArrayList;
 import java.util.List;
 import java.util.Optional;
 
@@ -27,18 +25,26 @@ public class TransactionService {
     private final BatchRepository batchRepository;
     private final CategoryRepository categoryRepository;
 
-    public ResponseEntity<List<Transaction>> getTransactions() {
-        Optional<List<Transaction>> transactions = Optional.of(transactionRepository.findAll());
-        return ResponseEntity.ok().body(transactions.orElseGet(List::of));
+    public ResponseEntity<List<Transaction>> getTransactionsFromUser(Integer userId) {
+        if (userRepository.findById(userId).isEmpty()) {
+            return new ResponseEntity("User does not exist", HttpStatus.NOT_FOUND);
+        }
+        Optional<List<BeanAccount>> beanAccountsList = beanAccountRepository.findByUserId(userId);
+        List<Transaction> userTransactions = new ArrayList<>();
+        beanAccountsList.ifPresent(accounts -> {
+            for (BeanAccount account : accounts) {
+                Optional<List<Transaction>> temp = transactionRepository.findByBeanAccountId(account.getId());
+                temp.ifPresent(userTransactions::addAll);
+            }
+        });
+
+        return ResponseEntity.ok().body(userTransactions);
     }
 
     public ResponseEntity<Transaction> registerTransaction(TransactionRequest transactionRequest) {
         DateTimeFormatter formatter = DateTimeFormatter.ofPattern("yyyy-MM-dd HH:mm");
         try {
             LocalDateTime dateTime = LocalDateTime.parse(transactionRequest.getTransaction_time(), formatter);
-            if (userRepository.findById(transactionRequest.getUser_id()).isEmpty()) {
-                return new ResponseEntity("User does not exist", HttpStatus.NOT_FOUND);
-            }
             if (beanAccountRepository.findById(transactionRequest.getBean_account_id()).isEmpty()) {
                 return new ResponseEntity("Bean Account is not found", HttpStatus.NOT_FOUND);
             }
@@ -48,8 +54,18 @@ public class TransactionService {
             if (categoryRepository.findById(transactionRequest.getCategory_id()).isEmpty()) {
                 return new ResponseEntity("Category does note exist", HttpStatus.NOT_FOUND);
             }
+            BeanAccount updateBeanAccount = beanAccountRepository.findById(transactionRequest.getBean_account_id()).get();
+            BigDecimal oldCurrentAmount = updateBeanAccount.getCurrent_balance();
+            BigDecimal newAmount = BigDecimal.ZERO;
+            if(transactionRequest.getIs_outgoing()){
+                newAmount = oldCurrentAmount.subtract(transactionRequest.getAmount());
+            }else{
+                newAmount = oldCurrentAmount.add(transactionRequest.getAmount());
+            }
+
+            updateBeanAccount.setCurrent_balance(newAmount);
+            beanAccountRepository.save(updateBeanAccount);
             var newTrans = Transaction.builder()
-                    .user_id(transactionRequest.getUser_id())
                     .bean_account_id(transactionRequest.getBean_account_id())
                     .batch_id(transactionRequest.getBatch_id())
                     .category_id(transactionRequest.getCategory_id())
@@ -85,7 +101,6 @@ public class TransactionService {
     }
 
     public ResponseEntity<Transaction> updateTransaction(Integer id,
-                                                         Optional<Integer> user_id,
                                                          Optional<Integer> bean_account_id,
                                                          Optional<Integer> batch_id,
                                                          Optional<Integer> category_id,
@@ -109,13 +124,6 @@ public class TransactionService {
             }
         }
 
-        if (user_id.isPresent()) {
-            Optional<User> userExist = userRepository.findById(user_id.get());
-            if (userExist.isEmpty()) {
-                return new ResponseEntity("User does not Exists", HttpStatus.NOT_FOUND);
-            }
-            transaction.get().setUser_id(user_id.get());
-        }
         if (bean_account_id.isPresent()) {
             if (beanAccountRepository.findById(bean_account_id.get()).isEmpty()) {
                 return new ResponseEntity("Bean Account does not Exists", HttpStatus.NOT_FOUND);
