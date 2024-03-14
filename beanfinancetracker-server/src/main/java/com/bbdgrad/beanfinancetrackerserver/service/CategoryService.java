@@ -58,4 +58,21 @@ public class CategoryService {
         categoryRepository.save(category.get());
         return ResponseEntity.ok().body(category.get());
     }
+
+//        public ResponseEntity<Object> updateCategory(Integer id, BigDecimal monthlyBudget) {
+//            try {
+//                Optional<Category> category = categoryRepository.findById(id);
+//                if (category.isEmpty()) {
+//                    return new ResponseEntity<>("Category not found", HttpStatus.NOT_FOUND);
+//                }
+//                if (monthlyBudget == null) {
+//                    return new ResponseEntity<>("Nothing to update", HttpStatus.BAD_REQUEST);
+//                }
+//                category.get().setMonthlyBudget(monthlyBudget);
+//                categoryRepository.save(category.get());
+//                return ResponseEntity.ok().body(category.get());
+//            } catch (Exception e) {
+//                return new ResponseEntity<>("An error occurred: " + e.getMessage(), HttpStatus.INTERNAL_SERVER_ERROR);
+//            }
+//        }
 }
