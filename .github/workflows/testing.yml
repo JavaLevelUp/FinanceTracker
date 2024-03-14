@@ -71,9 +71,9 @@ jobs:
           cache: maven
 
       # Pull environment config from S3
-      - name: Retrieve environment variables file
-        run: |
-          aws s3 cp s3://${{secrets.ENV_BUCKET_NAME}}/${{secrets.TEST_SERVER_ENV_OBJECT_KEY}}/env.properties 
+      # - name: Retrieve environment variables file
+      #   run: |
+      #     aws s3 cp s3://${{secrets.ENV_BUCKET_NAME}}/${{secrets.TEST_SERVER_ENV_OBJECT_KEY}}/env.properties 
 
       # Run SQL scripts on PostgreSQL container
       - name: Run SQL scripts on PostgreSQL container
