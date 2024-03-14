@@ -13,6 +13,7 @@ import com.bbdgrad.controller.CategoryController;
 import com.bbdgrad.controller.CountryController;
 import com.bbdgrad.controller.BeanController;
 import com.bbdgrad.controller.BatchController;
+import com.bbdgrad.controller.UserController;
 import com.bbdgrad.model.AccessToken;
 import com.bbdgrad.model.Category;
 import com.bbdgrad.model.DeviceVerification;
@@ -162,10 +163,11 @@ public class Main {
         do {
             System.out.print("\nSelect an operation:\n" +
                     "0. Exit\n" +
-                    "1. Country\n" +
-                    "2. Category\n" +
-                    "3. Bean\n" +
-                    "4. Batch\n" +
+                    "1. Manage Countries\n" +
+                    "2. Manage Categories\n" +
+                    "3. Manage Beans\n" +
+                    "4. Manage Batches\n" +
+                    "5. Manage Users\n" +
                     ">> ");
 
             if (scanner.hasNextLine()) {
@@ -186,6 +188,58 @@ public class Main {
                         break;
                     case '4':
                         showBatchMenu();
+                        break;
+                    case '5':
+                        showUserMenu();
+                        break;
+                    default:
+                        System.out.println("Invalid selection.\n");
+                }
+            } else {
+                System.out.println("Invalid selection.\n");
+            }
+        } while (!exiting);
+    }
+
+    private static void showUserMenu() {
+        Scanner scanner = new Scanner(System.in);
+        char input;
+
+        do {
+            System.out.print("\nSelect an operation:\n" +
+                    "0. Exit\n" +
+                    "1. Back\n" +
+                    "2. Create User\n" +
+                    "3. Update User\n" +
+                    "4. Delete User\n" +
+                    "5. Get All Users\n" +
+                    "6. Get User\n" +
+                    ">> ");
+
+            if (scanner.hasNextLine()) {
+                input = scanner.nextLine().charAt(0);
+                switch (input) {
+                    case '0':
+                        System.out.println("Thank you for using Bean Finance Tracker.");
+                        exiting = true;
+                        break;
+                    case '1':
+                        showMainMenu();
+                        return;
+                    case '2':
+                        UserController.createUser();
+                        break;
+                    case '3':
+                        UserController.updateUser();
+                        break;
+                    case '4':
+                        UserController.deleteUser();
+                        break;
+                    case '5':
+                        UserController.getAllUsers();
+                        break;
+                    case '6':
+                        UserController.getUser();
                         break;
                     default:
                         System.out.println("Invalid selection.\n");

@@ -28,17 +28,17 @@ public class TransactionController {
     }
 
     @GetMapping("/{transactionId}")
-    public ResponseEntity<Transaction> getBatch(@PathVariable("transactionId") Integer transactionId) {
+    public ResponseEntity<Transaction> getTransaction(@PathVariable("transactionId") Integer transactionId) {
         return transactionService.getTransaction(transactionId);
     }
 
     @DeleteMapping("/delete/{transactionId}")
-    public ResponseEntity<String> removeBatch(@PathVariable("transactionId") Integer transactionId) {
+    public ResponseEntity<String> removeTransaction(@PathVariable("transactionId") Integer transactionId) {
         return transactionService.removeTransaction(transactionId);
     }
 
     @PutMapping("/update/{transactionId}")
-    public ResponseEntity<Transaction> updateBatch(@PathVariable("transactionId") Integer transactionId,
+    public ResponseEntity<Transaction> updateTransaction(@PathVariable("transactionId") Integer transactionId,
                                                    @RequestParam(required = false) Optional<Integer> user_id,
                                                    @RequestParam(required = false) Optional<Integer> bean_account_id,
                                                    @RequestParam(required = false) Optional<Integer> batch_id,

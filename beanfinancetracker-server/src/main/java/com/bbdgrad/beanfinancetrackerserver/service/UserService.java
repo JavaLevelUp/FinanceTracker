@@ -58,6 +58,7 @@ public class UserService {
         }
         name.ifPresent(s -> user.get().setName(s));
         email.ifPresent(s -> user.get().setEmail(s));
+        userRepository.save(user.get());
 
         return ResponseEntity.ok().body(user.get());
 

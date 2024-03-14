@@ -19,27 +19,27 @@ public class UserController {
     private final UserService userService;
 
     @GetMapping()
-    public ResponseEntity<List<User>> getUser() {
+    public ResponseEntity<List<User>> getUsers() {
         return userService.getUsers();
     }
 
     @PostMapping
-    public ResponseEntity<User> createCategory(@RequestBody UserRequest userRequest) {
+    public ResponseEntity<User> createUser(@RequestBody UserRequest userRequest) {
         return userService.registerUser(userRequest);
     }
 
     @GetMapping("/{userId}")
-    public ResponseEntity<User> getBatch(@PathVariable("userId") Integer userId) {
+    public ResponseEntity<User> getUser(@PathVariable("userId") Integer userId) {
         return userService.getUser(userId);
     }
 
     @DeleteMapping("/delete/{userId}")
-    public ResponseEntity<String> removeBatch(@PathVariable("userId") int userId) {
+    public ResponseEntity<String> removeUser(@PathVariable("userId") int userId) {
         return userService.removeUser(userId);
     }
 
     @PutMapping("/update/{userId}")
-    public ResponseEntity<User> updateBatch(@PathVariable("userId") Integer userId,
+    public ResponseEntity<User> updateUser(@PathVariable("userId") Integer userId,
                                              @RequestParam(required = false) Optional<String> name,
                                              @RequestParam(required = false) Optional<String> email) {
         return userService.updateUser(userId, name, email);
