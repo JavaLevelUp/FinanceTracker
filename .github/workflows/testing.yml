@@ -11,7 +11,9 @@ jobs:
     runs-on: ubuntu-latest
     defaults:
       run:
-        working-directory: ${{ github.workspace }}
+        working-directory: ${{ github.workspace }}/beanfinancetracker-server
+        env:
+          JAVA_HOME: /usr/lib/jvm/java-8-openjdk-amd64  # Set Java 8 as JAVA_HOME
     steps:
       - name: Checkout
         uses: actions/checkout@v2
@@ -53,6 +55,4 @@ jobs:
 
       # Run Unit Tests
       - name: Run Unit Tests
-        run: |
-          cd beanfinancetracker-server
-          mvn test
+        run: mvn test
