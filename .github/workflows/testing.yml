@@ -9,6 +9,31 @@ on:
   pull_request:
 
 jobs:
+  # Label of the container job
+  container-job:
+    # Containers must run in Linux based operating systems
+    runs-on: ubuntu-latest
+    # Docker Hub image that `container-job` executes in
+    container: node:10.18-jessie
+
+    # Service containers to run with `container-job`
+    services:
+      # Label used to access the service container
+      postgres:
+        # Docker Hub image
+        image: postgres
+        # Provide the password for postgres
+        env:
+          POSTGRES_PASSWORD: postgres
+        # Set health checks to wait until postgres has started
+        options: >-
+          --health-cmd pg_isready
+          --health-interval 10s
+          --health-timeout 5s
+          --health-retries 5
+        ports:
+          # Maps tcp port 5432 on service container to the host
+          - 5432:5432
   testing:
     runs-on: ubuntu-latest
     defaults:
@@ -41,7 +66,7 @@ jobs:
     # Pull environment config from S3
     - name: Retrieve environment variables file
       run: |
-        aws s3 cp s3://${{secrets.ENV_BUCKET_NAME}}/${{secrets.SERVER_ENV_OBJECT_KEY}} ./env.properties
+        aws s3 cp s3://${{secrets.ENV_BUCKET_NAME}}/${{secrets.SERVER_ENV_OBJECT_KEY}}/env.properties
   
     - name: Run Unit Tests
       run: mvn test
