@@ -2,10 +2,7 @@ package com.bbdgrad.beanfinancetrackerserver.service;
 
 import com.bbdgrad.beanfinancetrackerserver.controller.batch.BatchRequest;
 import com.bbdgrad.beanfinancetrackerserver.controller.transaction.TransactionRequest;
-import com.bbdgrad.beanfinancetrackerserver.model.Batch;
-import com.bbdgrad.beanfinancetrackerserver.model.Bean;
-import com.bbdgrad.beanfinancetrackerserver.model.Transaction;
-import com.bbdgrad.beanfinancetrackerserver.model.User;
+import com.bbdgrad.beanfinancetrackerserver.model.*;
 import com.bbdgrad.beanfinancetrackerserver.repository.*;
 import lombok.RequiredArgsConstructor;
 import org.springframework.http.HttpStatus;
@@ -48,6 +45,17 @@ public class TransactionService {
             if (categoryRepository.findById(transactionRequest.getCategory_id()).isEmpty()) {
                 return new ResponseEntity("Category does note exist", HttpStatus.NOT_FOUND);
             }
+            BeanAccount updateBeanAccount = beanAccountRepository.findById(transactionRequest.getBean_account_id()).get();
+            BigDecimal oldCurrentAmount = updateBeanAccount.getCurrent_balance();
+            BigDecimal newAmount = BigDecimal.ZERO;
+            if(transactionRequest.getIs_outgoing()){
+                newAmount = oldCurrentAmount.subtract(transactionRequest.getAmount());
+            }else{
+                newAmount = oldCurrentAmount.add(transactionRequest.getAmount());
+            }
+
+            updateBeanAccount.setCurrent_balance(newAmount);
+            beanAccountRepository.save(updateBeanAccount);
             var newTrans = Transaction.builder()
                     .user_id(transactionRequest.getUser_id())
                     .bean_account_id(transactionRequest.getBean_account_id())
