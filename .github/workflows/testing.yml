@@ -6,7 +6,8 @@ permissions:
 
 on:
   push:
-  pull_request:
+    branches:
+      - 'testingcontrollersbranch'
 
 jobs:
   # Label of the container job
@@ -41,40 +42,40 @@ jobs:
       run:
         working-directory: ./beanfinancetracker-server
     steps:
-     # checkout repo
-    - name: 'Checkout'
-      uses: actions/checkout@main
+      # checkout repo
+      - name: 'Checkout'
+        uses: actions/checkout@main
 
-    # configure credentials
-    - name: Configure AWS Credentials
-      uses: aws-actions/configure-aws-credentials@v4
-      with:
-        role-to-assume: ${{secrets.AWS_ASSUME_ROLE}}
-        aws-region: "eu-west-1"
+      # configure credentials
+      - name: Configure AWS Credentials
+        uses: aws-actions/configure-aws-credentials@v4
+        with:
+          role-to-assume: ${{secrets.AWS_ASSUME_ROLE}}
+          aws-region: "eu-west-1"
 
-    - name: Set up AWS CLI
-      uses: unfor19/install-aws-cli-action@v1
+      - name: Set up AWS CLI
+        uses: unfor19/install-aws-cli-action@v1
 
-    # set up Java
-    - name: Set up JDK 21
-      uses: actions/setup-java@v3
-      with:
-        java-version: '21'
-        distribution: 'corretto'
-        cache: maven
+      # set up Java
+      - name: Set up JDK 21
+        uses: actions/setup-java@v3
+        with:
+          java-version: '21'
+          distribution: 'corretto'
+          cache: maven
 
-    # Pull environment config from S3
-    - name: Retrieve environment variables file
-      run: aws s3 cp s3://${{secrets.ENV_BUCKET_NAME}}/${{secrets.TEST_SERVER_ENV_OBJECT_KEY}}/env.properties 
-  
-    # Run SQL scripts on PostgreSQL container
-    - name: Run SQL scripts on PostgreSQL container
-      run: |
-        # Wait for PostgreSQL to start
-        sleep 10s
-        # Run SQL scripts
-        psql -h localhost -U postgres -d dbname -f database/SQL/BeansFinancialTrackerTables.sql
+      # Pull environment config from S3
+      - name: Retrieve environment variables file
+        run: aws s3 cp s3://${{secrets.ENV_BUCKET_NAME}}/${{secrets.TEST_SERVER_ENV_OBJECT_KEY}}/env.properties 
 
-    # Run Unit Tests
-    - name: Run Unit Tests
-      run: mvn test
+      # Run SQL scripts on PostgreSQL container
+      - name: Run SQL scripts on PostgreSQL container
+        run: |
+          # Wait for PostgreSQL to start
+          sleep 10s
+          # Run SQL scripts
+          psql -h localhost -U postgres -d dbname -f database/SQL/BeansFinancialTrackerTables.sql
+
+      # Run Unit Tests
+      - name: Run Unit Tests
+        run: mvn test
