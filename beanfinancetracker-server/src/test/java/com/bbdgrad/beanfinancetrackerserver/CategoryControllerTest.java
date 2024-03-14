@@ -42,7 +42,6 @@ class CategoryControllerTest {
     @InjectMocks
     private CategoryController categoryController;
 
-
     // Adding this line for testing
     @Test
     void testGetCategories() {
@@ -61,7 +60,6 @@ class CategoryControllerTest {
         assertEquals("Category 2", returnedCategories.getBody().get(1).getName());
 
         verify(categoryService, times(2)).getCategories();
-
     }
 
     @Test
