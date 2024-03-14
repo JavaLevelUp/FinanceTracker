@@ -44,7 +44,7 @@ jobs:
       # Run SQL scripts on PostgreSQL container
       - name: Run SQL scripts on PostgreSQL container
         run: |
-          sudo docker cp database/SQL/BeansFinancialTrackerTables.sql postgres-container:/tmp
+          sudo docker cp ../database/BeansFinancialTrackerTables.sql postgres-container:/tmp
           sudo docker exec -i postgres-container psql -U postgres -d FinancialTrackerBeans -f /tmp/BeansFinancialTrackerTables.sql
 
       # Run Unit Tests
