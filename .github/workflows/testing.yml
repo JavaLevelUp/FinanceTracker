@@ -46,10 +46,6 @@ jobs:
         run: |
           sudo docker cp ./database/SQL/BeansFinancialTrackerTables.sql postgres-container:/tmp/BeansFinancialTrackerTables.sql
 
-      # Change to beanfinancetracker-server directory
-      - name: Change to beanfinancetracker-server directory
-        run: cd beanfinancetracker-server
-
       # Run SQL scripts on PostgreSQL container
       - name: Run SQL scripts on PostgreSQL container
         run: |
@@ -57,4 +53,6 @@ jobs:
 
       # Run Unit Tests
       - name: Run Unit Tests
-        run: mvn test
+        run: |
+          cd beanfinancetracker-server
+          mvn test
