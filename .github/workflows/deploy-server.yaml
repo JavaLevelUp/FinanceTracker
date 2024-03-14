@@ -31,13 +31,7 @@ jobs:
         aws-region: "eu-west-1"
 
     - name: Set up AWS CLI
-      uses: unfor19/install-aws-cli-action
-
-    - name: Store AWS keys as output
-      id: keys
-      run:
-        echo "AWS_ACCESS_KEY_ID=$AWS_ACCESS_KEY_ID" >> $GITHUB_ENV
-        echo "AWS_SECRET_ACCESS_KEY=$AWS_SECRET_ACCESS_KEY" >> $GITHUB_ENV
+      uses: unfor19/install-aws-cli-action@v1
     
     # set up Java
     - name: Set up JDK 21
@@ -50,7 +44,6 @@ jobs:
     # Pull environment config from S3
     - name: Retrieve environment variables file
       run: |
-        echo access_key: $AWS_ACCESS_KEY_ID
         aws s3 cp s3://${{secrets.ENV_BUCKET_NAME}}/${{secrets.SERVER_ENV_OBJECT_KEY}}/env.properties
 
     # Test
