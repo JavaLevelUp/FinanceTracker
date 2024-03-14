@@ -1,10 +1,13 @@
 package com.bbdgrad.controller;
 
+import com.bbdgrad.model.Batch;
 import com.bbdgrad.model.BeanAccount;
 import com.bbdgrad.model.Transaction;
 import com.google.gson.Gson;
+import com.google.gson.reflect.TypeToken;
 
 import java.io.IOException;
+import java.lang.reflect.Type;
 import java.math.BigDecimal;
 import java.net.URI;
 import java.net.URISyntaxException;
@@ -14,6 +17,7 @@ import java.net.http.HttpResponse;
 import java.time.LocalDateTime;
 import java.time.format.DateTimeFormatter;
 import java.time.format.DateTimeParseException;
+import java.util.ArrayList;
 import java.util.Scanner;
 
 import static com.bbdgrad.Main.prop;
@@ -72,11 +76,61 @@ public class TransactionController {
     }
 
     public static void getAllTransactions() {
+        try (HttpClient httpClient = HttpClient.newHttpClient()) {
+            Scanner scanner = new Scanner(System.in);
+            System.out.print("Enter user id: ");
+            int id = Integer.parseInt(scanner.nextLine());
 
+            HttpRequest getRequest = HttpRequest.newBuilder()
+                    .uri(new URI(prop.getProperty("BASE_URL") + "/api/v1/transaction/getTransactions/" + id))
+                    .header("Content-Type", "application/json")
+                    .header("Authorization", "Bearer " + prop.getProperty("ACCESS_TOKEN"))
+                    .GET()
+                    .build();
+
+            HttpResponse<String> response = httpClient.send(getRequest, HttpResponse.BodyHandlers.ofString());
+            if (response.statusCode() == 200) {
+                Gson gson = new Gson();
+                Type listOfTransactions = new TypeToken<ArrayList<Transaction>>() {
+                }.getType();
+                ArrayList<Transaction> transactionList = gson.fromJson(response.body(), listOfTransactions);
+                for (Transaction t : transactionList) {
+                    System.out.println(t);
+                }
+            } else {
+                System.out.println("API request failed. Status code: " + response.statusCode() + "\n" + response.body());
+            }
+        } catch (IOException | InterruptedException | URISyntaxException e) {
+            throw new RuntimeException(e);
+        }
     }
 
     public static void getTransaction() {
+        try (HttpClient httpClient = HttpClient.newHttpClient()) {
+            Scanner scanner = new Scanner(System.in);
+            System.out.print("Enter transaction id: ");
+            int id = Integer.parseInt(scanner.nextLine());
 
+            HttpRequest getRequest = HttpRequest.newBuilder()
+                    .uri(new URI(prop.getProperty("BASE_URL") + "/api/v1/transaction/" + id))
+                    .header("Content-Type", "application/json")
+                    .header("Authorization", "Bearer " + prop.getProperty("ACCESS_TOKEN"))
+                    .GET()
+                    .build();
+
+            HttpResponse<String> response = httpClient.send(getRequest, HttpResponse.BodyHandlers.ofString());
+            if (response.statusCode() == 200) {
+                Gson gson = new Gson();
+                Transaction transaction = gson.fromJson(response.body(), Transaction.class);
+                System.out.println(transaction);
+            } else if (response.statusCode() == 404) {
+                System.out.println("Transaction not found");
+            } else {
+                System.out.println("API request failed. Status code: " + response.statusCode());
+            }
+        } catch (IOException | InterruptedException | URISyntaxException e) {
+            throw new RuntimeException(e);
+        }
     }
 
 }

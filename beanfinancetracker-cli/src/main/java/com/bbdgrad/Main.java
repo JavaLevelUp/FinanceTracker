@@ -20,6 +20,9 @@ import java.util.Properties;
 public class Main {
 
     public static final Properties prop = new Properties();
+    public static String ACCESS_TOKEN = "";
+    public static final String BASE_URL = "http://localhost:8080";
+    public static final String CLIENT_ID = "a74454269fa57801aff3";
     private static boolean authenticated = false;
     private static boolean exiting = false;
 
@@ -27,8 +30,7 @@ public class Main {
 
         try (FileInputStream input = new FileInputStream("env.properties")) {
             prop.load(input);
-            //TODO: remove this
-            prop.setProperty("ACCESS_TOKEN", "");
+            //prop.setProperty("ACCESS_TOKEN", "");
         } catch (IOException ex) {
             throw new RuntimeException("Failed to load environment properties", ex);
         }
@@ -61,9 +63,8 @@ public class Main {
                         exiting = true;
                         break;
                     case '1':
-                        //TODO: change this back
-                        //authenticate();
-                        showMainMenu();
+                        authenticate();
+                        //showMainMenu();
                         break;
                     default:
                         System.out.println("Invalid selection.\n");
@@ -571,6 +572,7 @@ public class Main {
                     success = true;
                     System.out.println("Successfully authenticated!");
                     prop.setProperty("ACCESS_TOKEN", accessToken.access_token());
+                    ACCESS_TOKEN = accessToken.access_token();
                     System.out.println(prop.getProperty("ACCESS_TOKEN"));
                     authenticated = true;
                     showMainMenu();
