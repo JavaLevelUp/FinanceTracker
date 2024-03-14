@@ -57,7 +57,7 @@ public class CountryController {
             System.out.print("Enter country id: ");
             int id = Integer.parseInt(scanner.nextLine());
             System.out.print("Enter country name: ");
-            String name = scanner.nextLine();
+            String name = scanner.nextLine().replace(" ", "%20");
 
             try (HttpClient httpClient = HttpClient.newHttpClient()) {
                 HttpRequest request = HttpRequest.newBuilder()

@@ -9,11 +9,7 @@ import java.net.http.HttpRequest;
 import java.net.http.HttpResponse;
 import java.util.Scanner;
 
-import com.bbdgrad.controller.CategoryController;
-import com.bbdgrad.controller.CountryController;
-import com.bbdgrad.controller.BeanController;
-import com.bbdgrad.controller.BatchController;
-import com.bbdgrad.controller.UserController;
+import com.bbdgrad.controller.*;
 import com.bbdgrad.model.AccessToken;
 import com.bbdgrad.model.Category;
 import com.bbdgrad.model.DeviceVerification;
@@ -168,6 +164,7 @@ public class Main {
                     "3. Manage Beans\n" +
                     "4. Manage Batches\n" +
                     "5. Manage Users\n" +
+                    "6. Manage Accounts\n" +
                     ">> ");
 
             if (scanner.hasNextLine()) {
@@ -191,6 +188,58 @@ public class Main {
                         break;
                     case '5':
                         showUserMenu();
+                        break;
+                    case '6':
+                        showAccountMenu();
+                        break;
+                    default:
+                        System.out.println("Invalid selection.\n");
+                }
+            } else {
+                System.out.println("Invalid selection.\n");
+            }
+        } while (!exiting);
+    }
+
+    private static void showAccountMenu() {
+        Scanner scanner = new Scanner(System.in);
+        char input;
+
+        do {
+            System.out.print("\nSelect an operation:\n" +
+                    "0. Exit\n" +
+                    "1. Back\n" +
+                    "2. Create Account\n" +
+                    "3. Update Account\n" +
+                    "4. Delete Account\n" +
+                    "5. Get All Accounts\n" +
+                    "6. Get Account\n" +
+                    ">> ");
+
+            if (scanner.hasNextLine()) {
+                input = scanner.nextLine().charAt(0);
+                switch (input) {
+                    case '0':
+                        System.out.println("Thank you for using Bean Finance Tracker.");
+                        exiting = true;
+                        break;
+                    case '1':
+                        showMainMenu();
+                        return;
+                    case '2':
+                        BeanAccountController.createBeanAccount();
+                        break;
+                    case '3':
+                        BeanAccountController.updateBeanAccount();
+                        break;
+                    case '4':
+                        BeanAccountController.deleteBeanAccount();
+                        break;
+                    case '5':
+                        BeanAccountController.getAllBeanAccounts();
+                        break;
+                    case '6':
+                        BeanAccountController.getBeanAccount();
                         break;
                     default:
                         System.out.println("Invalid selection.\n");
