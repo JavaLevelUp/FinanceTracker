@@ -58,9 +58,12 @@ jobs:
           java-version: '21'
           distribution: 'corretto'
           cache: maven
-          
+
       # Run Unit Tests
       - name: Run Unit Tests
         run: |
           cd beanfinancetracker-server
+          echo "POSTGRES_DB=${{ secrets.TEST_POSTGRES_DB }}" > env.properties
+          echo "POSTGRES_USER=${{ secrets.TEST_POSTGRES_USER }}" >> env.properties
+          echo "POSTGRES_PASSWORD=${{ secrets.TEST_POSTGRES_PASSWORD }}" >> env.properties
           mvn test
