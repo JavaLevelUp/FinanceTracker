@@ -28,7 +28,7 @@ jobs:
         aws-region: "eu-west-1"
 
     - name: Set up AWS CLI
-      uses: unfor19/install-aws-cli-action
+      uses: unfor19/install-aws-cli-action@v1
 
     - name: Store AWS keys as output
       id: keys
