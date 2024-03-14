@@ -2,6 +2,4 @@ databaseChangeLog:
   - include:
       file: ./database/SQL/example.sql
   - include:
-      file: ./database/SQL/TableCreates.sql
-  - include:
-      file: ./database/SQL/TableAlters.sql
+      file: ./database/SQL/creation.sql
