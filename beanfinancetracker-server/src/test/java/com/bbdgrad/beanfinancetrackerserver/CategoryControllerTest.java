@@ -99,7 +99,7 @@ class CategoryControllerTest {
     }
     //
 
-    // 
+    //
     @Test
     void testCategoriesUpdate(){
         try {
