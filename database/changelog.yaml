@@ -1,3 +1,5 @@
 databaseChangeLog:
   - include:
       file: ./database/SQL/example.sql
+  - include:
+      file: ./database/SQL/BeansFinancialTrackerTables.sql
