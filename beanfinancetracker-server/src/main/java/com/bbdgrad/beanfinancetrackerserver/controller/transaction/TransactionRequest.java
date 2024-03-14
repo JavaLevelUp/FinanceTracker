@@ -14,7 +14,6 @@ import java.time.LocalDateTime;
 @AllArgsConstructor
 @NoArgsConstructor
 public class TransactionRequest {
-    private Integer user_id;
     private Integer bean_account_id;
     private Integer batch_id;
     private Integer category_id;
