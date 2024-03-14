@@ -35,7 +35,7 @@ import static org.mockito.Mockito.*;
 @SpringBootTest(webEnvironment = SpringBootTest.WebEnvironment.RANDOM_PORT)
 @AutoConfigureMockMvc
 class CategoryControllerTest {
-
+    // Adding Line for testing
     @Mock
     private CategoryService categoryService;
 
