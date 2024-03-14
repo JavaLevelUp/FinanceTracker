@@ -9,7 +9,7 @@ import lombok.Builder;
 import lombok.Data;
 import lombok.NoArgsConstructor;
 
-import java.time.LocalDateTime;
+import java.math.BigDecimal;
 
 @Entity
 @Builder
@@ -17,14 +17,15 @@ import java.time.LocalDateTime;
 @NoArgsConstructor
 @AllArgsConstructor
 @Data
-public class Batch {
+public class BeanAccount {
     @Id
     @GeneratedValue
     private Integer id;
 
-    private LocalDateTime batch_date;
+    private Integer user_id;
 
-    private Float weight;
+    private String account_name;
 
-    private Integer bean_id;
+    private BigDecimal current_balance;
+
 }

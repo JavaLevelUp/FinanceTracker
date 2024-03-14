@@ -12,6 +12,8 @@ import org.springframework.http.HttpStatus;
 import org.springframework.http.ResponseEntity;
 import org.springframework.stereotype.Service;
 
+import java.time.LocalDateTime;
+import java.time.format.DateTimeFormatter;
 import java.util.List;
 import java.util.Optional;
 
@@ -27,12 +29,19 @@ public class BatchService {
     }
 
     public ResponseEntity<Batch> registerBatch(BatchRequest batchRequest) {
-        var newBatch = Batch.builder()
-                .quantity(batchRequest.getQuantity())
-                .weight(batchRequest.getWeight())
-                .bean_id(batchRequest.getBean_id()).build();
-        batchRepository.save(newBatch);
-        return ResponseEntity.ok().body(newBatch);
+        DateTimeFormatter formatter = DateTimeFormatter.ofPattern("yyyy-MM-dd HH:mm");
+        try {
+            LocalDateTime dateTime = LocalDateTime.parse(batchRequest.getBatch_date(), formatter);
+            var newBatch = Batch.builder()
+                    .batch_date(dateTime)
+                    .weight(batchRequest.getWeight())
+                    .bean_id(batchRequest.getBean_id()).build();
+            batchRepository.save(newBatch);
+            return ResponseEntity.ok().body(newBatch);
+        }catch (Exception ex){
+            return new ResponseEntity("Date format error", HttpStatus.BAD_REQUEST);
+        }
+
     }
 
     public ResponseEntity<String> removeBatch(Integer id) {
@@ -53,13 +62,23 @@ public class BatchService {
         return ResponseEntity.ok().body(batch.orElse(null));
     }
 
-    public ResponseEntity<Batch> updateBatch(Integer id, Optional<Integer> quantity, Optional<Float> weight, Optional<Integer> bean_id) {
+    public ResponseEntity<Batch> updateBatch(Integer id, Optional<String> batch_date, Optional<Float> weight, Optional<Integer> bean_id) {
+
+        DateTimeFormatter formatter = DateTimeFormatter.ofPattern("yyyy-MM-dd HH:mm");
 
         Optional<Batch> batch = batchRepository.findById(id);
         if (batch.isEmpty()) {
             return new ResponseEntity("Batch does not Exists", HttpStatus.NOT_FOUND);
         }
-        quantity.ifPresent(integer -> batch.get().setQuantity(integer));
+        if(batch_date.isPresent()){
+            try {
+                LocalDateTime dateTime = LocalDateTime.parse(batch_date.get(), formatter);
+                batch_date.ifPresent(integer -> batch.get().setBatch_date(dateTime));
+            }catch (Exception e){
+                return new ResponseEntity("Date format error", HttpStatus.BAD_REQUEST);
+
+            }
+        }
         weight.ifPresent(aFloat -> batch.get().setWeight(aFloat));
 
         if (bean_id.isPresent()) {

@@ -8,6 +8,8 @@ import lombok.RequiredArgsConstructor;
 import org.springframework.http.ResponseEntity;
 import org.springframework.web.bind.annotation.*;
 
+import java.time.LocalDateTime;
+import java.time.format.DateTimeFormatter;
 import java.util.List;
 import java.util.Optional;
 
@@ -39,9 +41,9 @@ public class BatchController {
 
     @PutMapping("/update/{batchId}")
     public ResponseEntity<Batch> updateBatch(@PathVariable("batchId") Integer batchId,
-                                             @RequestParam(required = false) Optional<Integer> quantity,
+                                             @RequestParam(required = false) Optional<String> batch_date,
                                              @RequestParam(required = false) Optional<Float> weight,
                                              @RequestParam(required = false) Optional<Integer> bean_id) {
-        return batchService.updateBatch(batchId, quantity, weight, bean_id);
+        return batchService.updateBatch(batchId, batch_date, weight, bean_id);
     }
 }
