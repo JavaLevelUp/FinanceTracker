@@ -51,6 +51,14 @@ jobs:
         run: |
           sudo docker exec -i postgres-container psql -U postgres -d FinancialTrackerBeans -f /tmp/BeansFinancialTrackerTables.sql
 
+      # set up Java
+      - name: Set up JDK 21
+        uses: actions/setup-java@v3
+        with:
+          java-version: '21'
+          distribution: 'corretto'
+          cache: maven
+          
       # Run Unit Tests
       - name: Run Unit Tests
         run: |
