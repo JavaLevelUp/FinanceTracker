@@ -1,4 +1,5 @@
-# FinanceTracker
+# Bean Finance Tracker
+Welcome to bean finance tracker, a software tool designed for admins to help manage the finances and transactions of bean farmers. Using this application, managing the transactions between farmers at local markets becomes easy.
 
 ## Running the CLI - On a linux system
 1. Download the BEANCLI.deb file that is available in the release.
