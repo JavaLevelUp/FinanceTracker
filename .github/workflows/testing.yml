@@ -2,9 +2,6 @@ name: Java Unit/Integration Testing with Dockerized PostgreSQL
 
 on:
   push:
-    branches:
-      - main
-      - 'testingcontrollersbranch'
 
 jobs:
   testing:
