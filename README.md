@@ -23,3 +23,6 @@ Prerequisites:
    ``` sh
    terragrunt run-all apply
    ```
+
+Further Documentation:
+https://grad-projects.atlassian.net/wiki/spaces/B/pages/2490379/Finance+Tracker+for+Beans
