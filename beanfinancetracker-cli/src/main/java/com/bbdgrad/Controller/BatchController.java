@@ -19,7 +19,6 @@ import java.time.format.DateTimeParseException;
 import java.util.ArrayList;
 import java.util.Scanner;
 
-import static com.bbdgrad.Main.prop;
 
 public class BatchController {
 

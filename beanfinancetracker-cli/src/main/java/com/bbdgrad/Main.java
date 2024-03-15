@@ -19,7 +19,6 @@ import java.util.Properties;
 
 public class Main {
 
-    public static final Properties prop = new Properties();
     public static final String BASE_URL = "http://finance-tracker.eba-guyqsxba.eu-west-1.elasticbeanstalk.com";
     public static final String CLIENT_ID = "9e31f7dc97151b389182";
     public static String ACCESS_TOKEN = "";
@@ -27,13 +26,6 @@ public class Main {
     private static boolean exiting = false;
 
     public static void main(String[] args) {
-
-//        try (FileInputStream input = new FileInputStream("src/main/resources/env.properties")) {
-//            prop.load(input);
-//            //prop.setProperty("ACCESS_TOKEN", "");
-//        } catch (IOException ex) {
-//            throw new RuntimeException("Failed to load environment properties", ex);
-//        }
 
         System.out.println("Welcome to Bean Finance Tracker!\n---");
 

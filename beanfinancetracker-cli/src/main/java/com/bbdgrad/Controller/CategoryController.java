@@ -17,7 +17,6 @@ import java.net.http.HttpResponse;
 import java.util.ArrayList;
 import java.util.Scanner;
 
-import static com.bbdgrad.Main.prop;
 
 public class CategoryController {
 
