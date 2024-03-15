@@ -20,17 +20,20 @@ import java.util.Properties;
 public class Main {
 
     public static final Properties prop = new Properties();
+    public static final String BASE_URL = "http://finance-tracker.eba-guyqsxba.eu-west-1.elasticbeanstalk.com";
+    public static final String CLIENT_ID = "9e31f7dc97151b389182";
+    public static String ACCESS_TOKEN = "";
     private static boolean authenticated = false;
     private static boolean exiting = false;
 
     public static void main(String[] args) {
 
-        try (FileInputStream input = new FileInputStream("src/main/resources/env.properties")) {
-            prop.load(input);
-            //prop.setProperty("ACCESS_TOKEN", "");
-        } catch (IOException ex) {
-            throw new RuntimeException("Failed to load environment properties", ex);
-        }
+//        try (FileInputStream input = new FileInputStream("src/main/resources/env.properties")) {
+//            prop.load(input);
+//            //prop.setProperty("ACCESS_TOKEN", "");
+//        } catch (IOException ex) {
+//            throw new RuntimeException("Failed to load environment properties", ex);
+//        }
 
         System.out.println("Welcome to Bean Finance Tracker!\n---");
 
@@ -53,18 +56,22 @@ public class Main {
                     ">> ");
 
             if (scanner.hasNextLine()) {
-                input = scanner.nextLine().charAt(0);
-                switch (input) {
-                    case '0':
-                        System.out.println("Thank you for using Bean Finance Tracker.");
-                        exiting = true;
-                        break;
-                    case '1':
-                        authenticate();
-                        //showMainMenu();
-                        break;
-                    default:
-                        System.out.println("Invalid selection.\n");
+                try {
+                    input = scanner.nextLine().charAt(0);
+                    switch (input) {
+                        case '0':
+                            System.out.println("Thank you for using Bean Finance Tracker.");
+                            exiting = true;
+                            break;
+                        case '1':
+                            authenticate();
+                            //showMainMenu();
+                            break;
+                        default:
+                            System.out.println("Invalid selection.\n");
+                    }
+                } catch (IndexOutOfBoundsException ex) {
+                    System.out.println("Please enter a value\n");
                 }
             } else {
                 System.out.println("Invalid selection.\n");
@@ -167,35 +174,39 @@ public class Main {
                     ">> ");
 
             if (scanner.hasNextLine()) {
-                input = scanner.nextLine().charAt(0);
-                switch (input) {
-                    case '0':
-                        System.out.println("Thank you for using Bean Finance Tracker.");
-                        exiting = true;
-                        break;
-                    case '1':
-                        showCountryMenu();
-                        break;
-                    case '2':
-                        showCategoryMenu();
-                        break;
-                    case '3':
-                        showBeanMenu();
-                        break;
-                    case '4':
-                        showBatchMenu();
-                        break;
-                    case '5':
-                        showUserMenu();
-                        break;
-                    case '6':
-                        showAccountMenu();
-                        break;
-                    case '7':
-                        showTransactionMenu();
-                        break;
-                    default:
-                        System.out.println("Invalid selection.\n");
+                try {
+                    input = scanner.nextLine().charAt(0);
+                    switch (input) {
+                        case '0':
+                            System.out.println("Thank you for using Bean Finance Tracker.");
+                            exiting = true;
+                            break;
+                        case '1':
+                            showCountryMenu();
+                            break;
+                        case '2':
+                            showCategoryMenu();
+                            break;
+                        case '3':
+                            showBeanMenu();
+                            break;
+                        case '4':
+                            showBatchMenu();
+                            break;
+                        case '5':
+                            showUserMenu();
+                            break;
+                        case '6':
+                            showAccountMenu();
+                            break;
+                        case '7':
+                            showTransactionMenu();
+                            break;
+                        default:
+                            System.out.println("Invalid selection.\n");
+                    }
+                } catch (IndexOutOfBoundsException ex) {
+                    System.out.println("Please enter a value\n");
                 }
             } else {
                 System.out.println("Invalid selection.\n");
@@ -217,26 +228,30 @@ public class Main {
                     ">> ");
 
             if (scanner.hasNextLine()) {
-                input = scanner.nextLine().charAt(0);
-                switch (input) {
-                    case '0':
-                        System.out.println("Thank you for using Bean Finance Tracker.");
-                        exiting = true;
-                        break;
-                    case '1':
-                        showMainMenu();
-                        return;
-                    case '2':
-                        TransactionController.createTransaction();
-                        break;
-                    case '3':
-                        TransactionController.getAllTransactions();
-                        break;
-                    case '4':
-                        TransactionController.getTransaction();
-                        break;
-                    default:
-                        System.out.println("Invalid selection.\n");
+                try {
+                    input = scanner.nextLine().charAt(0);
+                    switch (input) {
+                        case '0':
+                            System.out.println("Thank you for using Bean Finance Tracker.");
+                            exiting = true;
+                            break;
+                        case '1':
+                            showMainMenu();
+                            return;
+                        case '2':
+                            TransactionController.createTransaction();
+                            break;
+                        case '3':
+                            TransactionController.getAllTransactions();
+                            break;
+                        case '4':
+                            TransactionController.getTransaction();
+                            break;
+                        default:
+                            System.out.println("Invalid selection.\n");
+                    }
+                } catch (IndexOutOfBoundsException ex) {
+                    System.out.println("Please enter a value\n");
                 }
             } else {
                 System.out.println("Invalid selection.\n");
@@ -260,32 +275,36 @@ public class Main {
                     ">> ");
 
             if (scanner.hasNextLine()) {
-                input = scanner.nextLine().charAt(0);
-                switch (input) {
-                    case '0':
-                        System.out.println("Thank you for using Bean Finance Tracker.");
-                        exiting = true;
-                        break;
-                    case '1':
-                        showMainMenu();
-                        return;
-                    case '2':
-                        BeanAccountController.createBeanAccount();
-                        break;
-                    case '3':
-                        BeanAccountController.updateBeanAccount();
-                        break;
-                    case '4':
-                        BeanAccountController.deleteBeanAccount();
-                        break;
-                    case '5':
-                        BeanAccountController.getAllBeanAccounts();
-                        break;
-                    case '6':
-                        BeanAccountController.getBeanAccount();
-                        break;
-                    default:
-                        System.out.println("Invalid selection.\n");
+                try {
+                    input = scanner.nextLine().charAt(0);
+                    switch (input) {
+                        case '0':
+                            System.out.println("Thank you for using Bean Finance Tracker.");
+                            exiting = true;
+                            break;
+                        case '1':
+                            showMainMenu();
+                            return;
+                        case '2':
+                            BeanAccountController.createBeanAccount();
+                            break;
+                        case '3':
+                            BeanAccountController.updateBeanAccount();
+                            break;
+                        case '4':
+                            BeanAccountController.deleteBeanAccount();
+                            break;
+                        case '5':
+                            BeanAccountController.getAllBeanAccounts();
+                            break;
+                        case '6':
+                            BeanAccountController.getBeanAccount();
+                            break;
+                        default:
+                            System.out.println("Invalid selection.\n");
+                    }
+                } catch (IndexOutOfBoundsException ex) {
+                    System.out.println("Please enter a value\n");
                 }
             } else {
                 System.out.println("Invalid selection.\n");
@@ -309,32 +328,36 @@ public class Main {
                     ">> ");
 
             if (scanner.hasNextLine()) {
-                input = scanner.nextLine().charAt(0);
-                switch (input) {
-                    case '0':
-                        System.out.println("Thank you for using Bean Finance Tracker.");
-                        exiting = true;
-                        break;
-                    case '1':
-                        showMainMenu();
-                        return;
-                    case '2':
-                        UserController.createUser();
-                        break;
-                    case '3':
-                        UserController.updateUser();
-                        break;
-                    case '4':
-                        UserController.deleteUser();
-                        break;
-                    case '5':
-                        UserController.getAllUsers();
-                        break;
-                    case '6':
-                        UserController.getUser();
-                        break;
-                    default:
-                        System.out.println("Invalid selection.\n");
+                try {
+                    input = scanner.nextLine().charAt(0);
+                    switch (input) {
+                        case '0':
+                            System.out.println("Thank you for using Bean Finance Tracker.");
+                            exiting = true;
+                            break;
+                        case '1':
+                            showMainMenu();
+                            return;
+                        case '2':
+                            UserController.createUser();
+                            break;
+                        case '3':
+                            UserController.updateUser();
+                            break;
+                        case '4':
+                            UserController.deleteUser();
+                            break;
+                        case '5':
+                            UserController.getAllUsers();
+                            break;
+                        case '6':
+                            UserController.getUser();
+                            break;
+                        default:
+                            System.out.println("Invalid selection.\n");
+                    }
+                } catch (IndexOutOfBoundsException ex) {
+                    System.out.println("Please enter a value\n");
                 }
             } else {
                 System.out.println("Invalid selection.\n");
@@ -358,32 +381,36 @@ public class Main {
                     ">> ");
 
             if (scanner.hasNextLine()) {
-                input = scanner.nextLine().charAt(0);
-                switch (input) {
-                    case '0':
-                        System.out.println("Thank you for using Bean Finance Tracker.");
-                        exiting = true;
-                        break;
-                    case '1':
-                        showMainMenu();
-                        return;
-                    case '2':
-                        BatchController.createBatch();
-                        break;
-                    case '3':
-                        BatchController.updateBatch();
-                        break;
-                    case '4':
-                        BatchController.deleteBatch();
-                        break;
-                    case '5':
-                        BatchController.getAllBatches();
-                        break;
-                    case '6':
-                        BatchController.getBatch();
-                        break;
-                    default:
-                        System.out.println("Invalid selection.\n");
+                try {
+                    input = scanner.nextLine().charAt(0);
+                    switch (input) {
+                        case '0':
+                            System.out.println("Thank you for using Bean Finance Tracker.");
+                            exiting = true;
+                            break;
+                        case '1':
+                            showMainMenu();
+                            return;
+                        case '2':
+                            BatchController.createBatch();
+                            break;
+                        case '3':
+                            BatchController.updateBatch();
+                            break;
+                        case '4':
+                            BatchController.deleteBatch();
+                            break;
+                        case '5':
+                            BatchController.getAllBatches();
+                            break;
+                        case '6':
+                            BatchController.getBatch();
+                            break;
+                        default:
+                            System.out.println("Invalid selection.\n");
+                    }
+                } catch (IndexOutOfBoundsException ex) {
+                    System.out.println("Please enter a value\n");
                 }
             } else {
                 System.out.println("Invalid selection.\n");
@@ -407,32 +434,36 @@ public class Main {
                     ">> ");
 
             if (scanner.hasNextLine()) {
-                input = scanner.nextLine().charAt(0);
-                switch (input) {
-                    case '0':
-                        System.out.println("Thank you for using Bean Finance Tracker.");
-                        exiting = true;
-                        break;
-                    case '1':
-                        showMainMenu();
-                        return;
-                    case '2':
-                        BeanController.createBean();
-                        break;
-                    case '3':
-                        BeanController.updateBean();
-                        break;
-                    case '4':
-                        BeanController.deleteBean();
-                        break;
-                    case '5':
-                        BeanController.getAllBeans();
-                        break;
-                    case '6':
-                        BeanController.getBean();
-                        break;
-                    default:
-                        System.out.println("Invalid selection.\n");
+                try {
+                    input = scanner.nextLine().charAt(0);
+                    switch (input) {
+                        case '0':
+                            System.out.println("Thank you for using Bean Finance Tracker.");
+                            exiting = true;
+                            break;
+                        case '1':
+                            showMainMenu();
+                            return;
+                        case '2':
+                            BeanController.createBean();
+                            break;
+                        case '3':
+                            BeanController.updateBean();
+                            break;
+                        case '4':
+                            BeanController.deleteBean();
+                            break;
+                        case '5':
+                            BeanController.getAllBeans();
+                            break;
+                        case '6':
+                            BeanController.getBean();
+                            break;
+                        default:
+                            System.out.println("Invalid selection.\n");
+                    }
+                } catch (IndexOutOfBoundsException ex) {
+                    System.out.println("Please enter a value\n");
                 }
             } else {
                 System.out.println("Invalid selection.\n");
@@ -456,32 +487,36 @@ public class Main {
                     ">> ");
 
             if (scanner.hasNextLine()) {
-                input = scanner.nextLine().charAt(0);
-                switch (input) {
-                    case '0':
-                        System.out.println("Thank you for using Bean Finance Tracker.");
-                        exiting = true;
-                        break;
-                    case '1':
-                        showMainMenu();
-                        return;
-                    case '2':
-                        CountryController.createCountry();
-                        break;
-                    case '3':
-                        CountryController.updateCountry();
-                        break;
-                    case '4':
-                        CountryController.deleteCountry();
-                        break;
-                    case '5':
-                        CountryController.getAllCountries();
-                        break;
-                    case '6':
-                        CountryController.getCountry();
-                        break;
-                    default:
-                        System.out.println("Invalid selection.\n");
+                try {
+                    input = scanner.nextLine().charAt(0);
+                    switch (input) {
+                        case '0':
+                            System.out.println("Thank you for using Bean Finance Tracker.");
+                            exiting = true;
+                            break;
+                        case '1':
+                            showMainMenu();
+                            return;
+                        case '2':
+                            CountryController.createCountry();
+                            break;
+                        case '3':
+                            CountryController.updateCountry();
+                            break;
+                        case '4':
+                            CountryController.deleteCountry();
+                            break;
+                        case '5':
+                            CountryController.getAllCountries();
+                            break;
+                        case '6':
+                            CountryController.getCountry();
+                            break;
+                        default:
+                            System.out.println("Invalid selection.\n");
+                    }
+                } catch (IndexOutOfBoundsException ex) {
+                    System.out.println("Please enter a value\n");
                 }
             } else {
                 System.out.println("Invalid selection.\n");
@@ -505,32 +540,36 @@ public class Main {
                     ">> ");
 
             if (scanner.hasNextLine()) {
-                input = scanner.nextLine().charAt(0);
-                switch (input) {
-                    case '0':
-                        System.out.println("Thank you for using Bean Finance Tracker.");
-                        exiting = true;
-                        break;
-                    case '1':
-                        showMainMenu();
-                        return;
-                    case '2':
-                        CategoryController.createCategory();
-                        break;
-                    case '3':
-                        CategoryController.updateCategory();
-                        break;
-                    case '4':
-                        CategoryController.deleteCategory();
-                        break;
-                    case '5':
-                        CategoryController.getAllCategories();
-                        break;
-                    case '6':
-                        CategoryController.getCategory();
-                        break;
-                    default:
-                        System.out.println("Invalid selection.\n");
+                try {
+                    input = scanner.nextLine().charAt(0);
+                    switch (input) {
+                        case '0':
+                            System.out.println("Thank you for using Bean Finance Tracker.");
+                            exiting = true;
+                            break;
+                        case '1':
+                            showMainMenu();
+                            return;
+                        case '2':
+                            CategoryController.createCategory();
+                            break;
+                        case '3':
+                            CategoryController.updateCategory();
+                            break;
+                        case '4':
+                            CategoryController.deleteCategory();
+                            break;
+                        case '5':
+                            CategoryController.getAllCategories();
+                            break;
+                        case '6':
+                            CategoryController.getCategory();
+                            break;
+                        default:
+                            System.out.println("Invalid selection.\n");
+                    }
+                } catch (IndexOutOfBoundsException ex) {
+                    System.out.println("Please enter a value\n");
                 }
             } else {
                 System.out.println("Invalid selection.\n");
@@ -541,7 +580,7 @@ public class Main {
     private static void authenticate() {
         try (HttpClient httpClient = HttpClient.newHttpClient()) {
             HttpRequest post = HttpRequest.newBuilder()
-                    .uri(new URI("https://github.com/login/device/code?client_id=" + prop.getProperty("CLIENT_ID") + "&scope=read:user"))
+                    .uri(new URI("https://github.com/login/device/code?client_id=" + CLIENT_ID + "&scope=read:user"))
                     .POST(HttpRequest.BodyPublishers.noBody())
                     .header("Accept", "application/json")
                     .build();
@@ -557,7 +596,7 @@ public class Main {
             while (!success) {
                 Thread.sleep(5000);
                 HttpRequest postRequest = HttpRequest.newBuilder()
-                        .uri(new URI("https://github.com/login/oauth/access_token?client_id=" + prop.getProperty("CLIENT_ID") + "&device_code=" + deviceVerification.device_code() + "&grant_type=urn:ietf:params:oauth:grant-type:device_code"))
+                        .uri(new URI("https://github.com/login/oauth/access_token?client_id=" + CLIENT_ID + "&device_code=" + deviceVerification.device_code() + "&grant_type=urn:ietf:params:oauth:grant-type:device_code"))
                         .POST(HttpRequest.BodyPublishers.noBody())
                         .header("Accept", "application/json")
                         .build();
@@ -572,8 +611,7 @@ public class Main {
                     System.out.println(prop.getProperty("ACCESS_TOKEN"));
                     authenticated = true;
                     showMainMenu();
-                }
-                else {
+                } else {
                     System.out.println("Waiting for authentication...");
                 }
             }

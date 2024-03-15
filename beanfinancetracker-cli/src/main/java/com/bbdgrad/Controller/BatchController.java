@@ -1,5 +1,6 @@
 package com.bbdgrad.controller;
 
+import com.bbdgrad.Main;
 import com.bbdgrad.model.Batch;
 import com.bbdgrad.model.Bean;
 import com.google.gson.Gson;
@@ -40,7 +41,7 @@ public class BatchController {
             batch = null;
 
             HttpRequest request = HttpRequest.newBuilder()
-                    .uri(new URI(prop.getProperty("BASE_URL") + "/api/v1/batch"))
+                    .uri(new URI(Main.BASE_URL + "/api/v1/batch"))
                     .POST(HttpRequest.BodyPublishers.ofString(jsonBody))
                     .header("Content-Type", "application/json")
                     .header("Authorization", "Bearer " + prop.getProperty("ACCESS_TOKEN"))
@@ -98,7 +99,7 @@ public class BatchController {
 
             try (HttpClient httpClient = HttpClient.newHttpClient()) {
                 HttpRequest request = HttpRequest.newBuilder()
-                        .uri(new URI(prop.getProperty("BASE_URL") + "/api/v1/batch/update/" + id + batch_date + weight + beanId))
+                        .uri(new URI(Main.BASE_URL + "/api/v1/batch/update/" + id + batch_date + weight + beanId))
                         .PUT(HttpRequest.BodyPublishers.noBody())
                         .header("Content-Type", "application/json")
                         .header("Authorization", "Bearer " + prop.getProperty("ACCESS_TOKEN"))
@@ -136,7 +137,7 @@ public class BatchController {
 
         try (HttpClient httpClient = HttpClient.newHttpClient()) {
             HttpRequest request = HttpRequest.newBuilder()
-                    .uri(new URI(prop.getProperty("BASE_URL") + "/api/v1/batch/delete/" + id))
+                    .uri(new URI(Main.BASE_URL + "/api/v1/batch/delete/" + id))
                     .DELETE()
                     .header("Content-Type", "application/json")
                     .header("Authorization", "Bearer " + prop.getProperty("ACCESS_TOKEN"))
@@ -157,7 +158,7 @@ public class BatchController {
     public static void getAllBatches() {
         try (HttpClient httpClient = HttpClient.newHttpClient()) {
             HttpRequest getRequest = HttpRequest.newBuilder()
-                    .uri(new URI(prop.getProperty("BASE_URL") + "/api/v1/batch"))
+                    .uri(new URI(Main.BASE_URL + "/api/v1/batch"))
                     .header("Content-Type", "application/json")
                     .header("Authorization", "Bearer " + prop.getProperty("ACCESS_TOKEN"))
                     .GET()
@@ -187,7 +188,7 @@ public class BatchController {
             int id = Integer.parseInt(scanner.nextLine());
 
             HttpRequest getRequest = HttpRequest.newBuilder()
-                    .uri(new URI(prop.getProperty("BASE_URL") + "/api/v1/batch/" + id))
+                    .uri(new URI(Main.BASE_URL + "/api/v1/batch/" + id))
                     .header("Content-Type", "application/json")
                     .header("Authorization", "Bearer " + prop.getProperty("ACCESS_TOKEN"))
                     .GET()
