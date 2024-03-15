@@ -38,11 +38,11 @@ jobs:
       - name: Copy SQL script to PostgreSQL container
         run: |
           pwd
-          sudo docker cp ./database/SQL/BeansFinancialTrackerTables.sql postgres-container:/tmp/BeansFinancialTrackerTables.sql
+          sudo docker cp ./database/SQL/creation.sql postgres-container:/tmp/creation.sql
       # Run SQL scripts on PostgreSQL container
       - name: Run SQL scripts on PostgreSQL container
         run: |
-          sudo docker exec -i postgres-container psql -U postgres -d FinancialTrackerBeans -f /tmp/BeansFinancialTrackerTables.sql
+          sudo docker exec -i postgres-container psql -U postgres -d FinancialTrackerBeans -f /tmp/creation.sql
       # set up Java
       - name: Set up JDK 21
         uses: actions/setup-java@v3
