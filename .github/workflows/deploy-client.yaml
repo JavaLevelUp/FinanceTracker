@@ -45,7 +45,7 @@ jobs:
     # Pull environment config from S3
     - name: Retrieve environment variables file
       run: |
-        aws s3 cp s3://${{secrets.ENV_BUCKET_NAME}}/${{secrets.CLIENT_ENV_OBJECT_KEY}}/env.properties
+        aws s3 cp s3://${{secrets.ENV_BUCKET_NAME}}/${{secrets.CLIENT_ENV_OBJECT_KEY}} ./env.properties
 
     # Build package
     - name: Build JAR
