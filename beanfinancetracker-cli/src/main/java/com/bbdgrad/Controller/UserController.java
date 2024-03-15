@@ -1,5 +1,6 @@
 package com.bbdgrad.controller;
 
+import com.bbdgrad.Main;
 import com.bbdgrad.model.Batch;
 import com.bbdgrad.model.User;
 import com.google.gson.Gson;
@@ -49,10 +50,10 @@ public class UserController {
             user = null;
 
             HttpRequest request = HttpRequest.newBuilder()
-                    .uri(new URI(prop.getProperty("BASE_URL") + "/api/v1/user"))
+                    .uri(new URI(Main.BASE_URL + "/api/v1/user"))
                     .POST(HttpRequest.BodyPublishers.ofString(jsonBody))
                     .header("Content-Type", "application/json")
-                    .header("Authorization", "Bearer " + prop.getProperty("ACCESS_TOKEN"))
+                    .header("Authorization", "Bearer " + Main.ACCESS_TOKEN)
                     .build();
             jsonBody = null;
 
@@ -97,10 +98,10 @@ public class UserController {
 
         try (HttpClient httpClient = HttpClient.newHttpClient()) {
             HttpRequest request = HttpRequest.newBuilder()
-                    .uri(new URI(prop.getProperty("BASE_URL") + "/api/v1/user/update/" + id + name + email))
+                    .uri(new URI(Main.BASE_URL + "/api/v1/user/update/" + id + name + email))
                     .PUT(HttpRequest.BodyPublishers.noBody())
                     .header("Content-Type", "application/json")
-                    .header("Authorization", "Bearer " + prop.getProperty("ACCESS_TOKEN"))
+                    .header("Authorization", "Bearer " + Main.ACCESS_TOKEN)
                     .build();
 
             HttpResponse<String> response = httpClient.send(request, HttpResponse.BodyHandlers.ofString());
@@ -130,10 +131,10 @@ public class UserController {
 
         try (HttpClient httpClient = HttpClient.newHttpClient()) {
             HttpRequest request = HttpRequest.newBuilder()
-                    .uri(new URI(prop.getProperty("BASE_URL") + "/api/v1/user/delete/" + id))
+                    .uri(new URI(Main.BASE_URL + "/api/v1/user/delete/" + id))
                     .DELETE()
                     .header("Content-Type", "application/json")
-                    .header("Authorization", "Bearer " + prop.getProperty("ACCESS_TOKEN"))
+                    .header("Authorization", "Bearer " + Main.ACCESS_TOKEN)
                     .build();
 
             HttpResponse<String> response = httpClient.send(request, HttpResponse.BodyHandlers.ofString());
@@ -151,9 +152,9 @@ public class UserController {
     public static void getAllUsers() {
         try (HttpClient httpClient = HttpClient.newHttpClient()) {
             HttpRequest getRequest = HttpRequest.newBuilder()
-                    .uri(new URI(prop.getProperty("BASE_URL") + "/api/v1/user"))
+                    .uri(new URI(Main.BASE_URL + "/api/v1/user"))
                     .header("Content-Type", "application/json")
-                    .header("Authorization", "Bearer " + prop.getProperty("ACCESS_TOKEN"))
+                    .header("Authorization", "Bearer " + Main.ACCESS_TOKEN)
                     .GET()
                     .build();
 
@@ -180,9 +181,9 @@ public class UserController {
             int id = Integer.parseInt(scanner.nextLine());
 
             HttpRequest getRequest = HttpRequest.newBuilder()
-                    .uri(new URI(prop.getProperty("BASE_URL") + "/api/v1/user/" + id))
+                    .uri(new URI(Main.BASE_URL + "/api/v1/user/" + id))
                     .header("Content-Type", "application/json")
-                    .header("Authorization", "Bearer " + prop.getProperty("ACCESS_TOKEN"))
+                    .header("Authorization", "Bearer " + Main.ACCESS_TOKEN)
                     .GET()
                     .build();
 
