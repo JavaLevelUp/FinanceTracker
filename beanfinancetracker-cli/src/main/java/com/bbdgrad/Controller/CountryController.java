@@ -1,5 +1,6 @@
 package com.bbdgrad.controller;
 
+import com.bbdgrad.Main;
 import com.bbdgrad.model.Country;
 import com.google.gson.Gson;
 import com.google.gson.reflect.TypeToken;
@@ -29,10 +30,10 @@ public class CountryController {
 
         try (HttpClient httpClient = HttpClient.newHttpClient()) {
             HttpRequest post = HttpRequest.newBuilder()
-                    .uri(new URI(prop.getProperty("BASE_URL") + "/api/v1/country"))
+                    .uri(new URI(Main.BASE_URL + "/api/v1/country"))
                     .POST(HttpRequest.BodyPublishers.ofString(jsonBody))
                     .header("Content-Type", "application/json")
-                    .header("Authorization", "Bearer " + prop.getProperty("ACCESS_TOKEN"))
+                    .header("Authorization", "Bearer " + Main.ACCESS_TOKEN)
                     .build();
             jsonBody = null;
 
@@ -61,10 +62,10 @@ public class CountryController {
 
             try (HttpClient httpClient = HttpClient.newHttpClient()) {
                 HttpRequest request = HttpRequest.newBuilder()
-                        .uri(new URI(prop.getProperty("BASE_URL") + "/api/v1/country/update/" + id + "?name=" + name))
+                        .uri(new URI(Main.BASE_URL + "/api/v1/country/update/" + id + "?name=" + name))
                         .PUT(HttpRequest.BodyPublishers.noBody())
                         .header("Content-Type", "application/json")
-                        .header("Authorization", "Bearer " + prop.getProperty("ACCESS_TOKEN"))
+                        .header("Authorization", "Bearer " + Main.ACCESS_TOKEN)
                         .build();
 
                 HttpResponse<String> response = httpClient.send(request, HttpResponse.BodyHandlers.ofString());
@@ -97,10 +98,10 @@ public class CountryController {
 
             try (HttpClient httpClient = HttpClient.newHttpClient()) {
                 HttpRequest request = HttpRequest.newBuilder()
-                        .uri(new URI(prop.getProperty("BASE_URL") + "/api/v1/country/delete/" + id))
+                        .uri(new URI(Main.BASE_URL + "/api/v1/country/delete/" + id))
                         .DELETE()
                         .header("Content-Type", "application/json")
-                        .header("Authorization", "Bearer " + prop.getProperty("ACCESS_TOKEN"))
+                        .header("Authorization", "Bearer " + Main.ACCESS_TOKEN)
                         .build();
 
                 HttpResponse<String> response = httpClient.send(request, HttpResponse.BodyHandlers.ofString());
@@ -122,9 +123,9 @@ public class CountryController {
     public static void getAllCountries() {
         try (HttpClient httpClient = HttpClient.newHttpClient()) {
             HttpRequest getRequest = HttpRequest.newBuilder()
-                    .uri(new URI(prop.getProperty("BASE_URL") + "/api/v1/country"))
+                    .uri(new URI(Main.BASE_URL + "/api/v1/country"))
                     .header("Content-Type", "application/json")
-                    .header("Authorization", "Bearer " + prop.getProperty("ACCESS_TOKEN"))
+                    .header("Authorization", "Bearer " + Main.ACCESS_TOKEN)
                     .GET()
                     .build();
 
@@ -152,9 +153,9 @@ public class CountryController {
             int id = Integer.parseInt(scanner.nextLine());
 
             HttpRequest getRequest = HttpRequest.newBuilder()
-                    .uri(new URI(prop.getProperty("BASE_URL") + "/api/v1/country/" + id))
+                    .uri(new URI(Main.BASE_URL + "/api/v1/country/" + id))
                     .header("Content-Type", "application/json")
-                    .header("Authorization", "Bearer " + prop.getProperty("ACCESS_TOKEN"))
+                    .header("Authorization", "Bearer " + Main.ACCESS_TOKEN)
                     .GET()
                     .build();
 

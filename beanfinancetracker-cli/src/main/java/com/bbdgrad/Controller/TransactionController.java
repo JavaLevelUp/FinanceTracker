@@ -1,5 +1,6 @@
 package com.bbdgrad.controller;
 
+import com.bbdgrad.Main;
 import com.bbdgrad.model.Batch;
 import com.bbdgrad.model.BeanAccount;
 import com.bbdgrad.model.Transaction;
@@ -52,10 +53,10 @@ public class TransactionController {
             transaction = null;
 
             HttpRequest request = HttpRequest.newBuilder()
-                    .uri(new URI(prop.getProperty("BASE_URL") + "/api/v1/transaction"))
+                    .uri(new URI(Main.BASE_URL + "/api/v1/transaction"))
                     .POST(HttpRequest.BodyPublishers.ofString(jsonBody))
                     .header("Content-Type", "application/json")
-                    .header("Authorization", "Bearer " + prop.getProperty("ACCESS_TOKEN"))
+                    .header("Authorization", "Bearer " + Main.ACCESS_TOKEN)
                     .build();
             jsonBody = null;
 
@@ -82,9 +83,9 @@ public class TransactionController {
             int id = Integer.parseInt(scanner.nextLine());
 
             HttpRequest getRequest = HttpRequest.newBuilder()
-                    .uri(new URI(prop.getProperty("BASE_URL") + "/api/v1/transaction/getTransactions/" + id))
+                    .uri(new URI(Main.BASE_URL + "/api/v1/transaction/getTransactions/" + id))
                     .header("Content-Type", "application/json")
-                    .header("Authorization", "Bearer " + prop.getProperty("ACCESS_TOKEN"))
+                    .header("Authorization", "Bearer " + Main.ACCESS_TOKEN)
                     .GET()
                     .build();
 
@@ -112,9 +113,9 @@ public class TransactionController {
             int id = Integer.parseInt(scanner.nextLine());
 
             HttpRequest getRequest = HttpRequest.newBuilder()
-                    .uri(new URI(prop.getProperty("BASE_URL") + "/api/v1/transaction/" + id))
+                    .uri(new URI(Main.BASE_URL + "/api/v1/transaction/" + id))
                     .header("Content-Type", "application/json")
-                    .header("Authorization", "Bearer " + prop.getProperty("ACCESS_TOKEN"))
+                    .header("Authorization", "Bearer " + Main.ACCESS_TOKEN)
                     .GET()
                     .build();
 
