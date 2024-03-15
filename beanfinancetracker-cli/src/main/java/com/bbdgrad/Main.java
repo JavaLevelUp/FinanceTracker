@@ -607,8 +607,8 @@ public class Main {
                 if (accessToken.access_token() != null) {
                     success = true;
                     System.out.println("Successfully authenticated!");
-                    prop.setProperty("ACCESS_TOKEN", accessToken.access_token());
-                    System.out.println(prop.getProperty("ACCESS_TOKEN"));
+                    //prop.setProperty("ACCESS_TOKEN", accessToken.access_token());
+                    ACCESS_TOKEN = accessToken.access_token();
                     authenticated = true;
                     showMainMenu();
                 } else {

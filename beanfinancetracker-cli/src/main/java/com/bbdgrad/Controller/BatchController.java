@@ -44,7 +44,7 @@ public class BatchController {
                     .uri(new URI(Main.BASE_URL + "/api/v1/batch"))
                     .POST(HttpRequest.BodyPublishers.ofString(jsonBody))
                     .header("Content-Type", "application/json")
-                    .header("Authorization", "Bearer " + prop.getProperty("ACCESS_TOKEN"))
+                    .header("Authorization", "Bearer " + Main.ACCESS_TOKEN)
                     .build();
             jsonBody = null;
 
@@ -102,7 +102,7 @@ public class BatchController {
                         .uri(new URI(Main.BASE_URL + "/api/v1/batch/update/" + id + batch_date + weight + beanId))
                         .PUT(HttpRequest.BodyPublishers.noBody())
                         .header("Content-Type", "application/json")
-                        .header("Authorization", "Bearer " + prop.getProperty("ACCESS_TOKEN"))
+                        .header("Authorization", "Bearer " + Main.ACCESS_TOKEN)
                         .build();
 
                 HttpResponse<String> response = httpClient.send(request, HttpResponse.BodyHandlers.ofString());
@@ -140,7 +140,7 @@ public class BatchController {
                     .uri(new URI(Main.BASE_URL + "/api/v1/batch/delete/" + id))
                     .DELETE()
                     .header("Content-Type", "application/json")
-                    .header("Authorization", "Bearer " + prop.getProperty("ACCESS_TOKEN"))
+                    .header("Authorization", "Bearer " + Main.ACCESS_TOKEN)
                     .build();
 
             HttpResponse<String> response = httpClient.send(request, HttpResponse.BodyHandlers.ofString());
@@ -160,7 +160,7 @@ public class BatchController {
             HttpRequest getRequest = HttpRequest.newBuilder()
                     .uri(new URI(Main.BASE_URL + "/api/v1/batch"))
                     .header("Content-Type", "application/json")
-                    .header("Authorization", "Bearer " + prop.getProperty("ACCESS_TOKEN"))
+                    .header("Authorization", "Bearer " + Main.ACCESS_TOKEN)
                     .GET()
                     .build();
 
@@ -190,7 +190,7 @@ public class BatchController {
             HttpRequest getRequest = HttpRequest.newBuilder()
                     .uri(new URI(Main.BASE_URL + "/api/v1/batch/" + id))
                     .header("Content-Type", "application/json")
-                    .header("Authorization", "Bearer " + prop.getProperty("ACCESS_TOKEN"))
+                    .header("Authorization", "Bearer " + Main.ACCESS_TOKEN)
                     .GET()
                     .build();
 

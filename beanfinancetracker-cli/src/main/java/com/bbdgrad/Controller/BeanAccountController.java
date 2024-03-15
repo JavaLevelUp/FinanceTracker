@@ -1,5 +1,6 @@
 package com.bbdgrad.controller;
 
+import com.bbdgrad.Main;
 import com.bbdgrad.model.Batch;
 import com.bbdgrad.model.BeanAccount;
 import com.google.gson.Gson;
@@ -38,10 +39,10 @@ public class BeanAccountController {
             beanAccount = null;
 
             HttpRequest request = HttpRequest.newBuilder()
-                    .uri(new URI(prop.getProperty("BASE_URL") + "/api/v1/beanAccount"))
+                    .uri(new URI(Main.BASE_URL + "/api/v1/beanAccount"))
                     .POST(HttpRequest.BodyPublishers.ofString(jsonBody))
                     .header("Content-Type", "application/json")
-                    .header("Authorization", "Bearer " + prop.getProperty("ACCESS_TOKEN"))
+                    .header("Authorization", "Bearer " + Main.ACCESS_TOKEN)
                     .build();
             jsonBody = null;
 
@@ -95,10 +96,10 @@ public class BeanAccountController {
 
             try (HttpClient httpClient = HttpClient.newHttpClient()) {
                 HttpRequest request = HttpRequest.newBuilder()
-                        .uri(new URI(prop.getProperty("BASE_URL") + "/api/v1/beanAccount/update/" + id + userId + accountName + accountBalance))
+                        .uri(new URI(Main.BASE_URL + "/api/v1/beanAccount/update/" + id + userId + accountName + accountBalance))
                         .PUT(HttpRequest.BodyPublishers.noBody())
                         .header("Content-Type", "application/json")
-                        .header("Authorization", "Bearer " + prop.getProperty("ACCESS_TOKEN"))
+                        .header("Authorization", "Bearer " + Main.ACCESS_TOKEN)
                         .build();
 
                 HttpResponse<String> response = httpClient.send(request, HttpResponse.BodyHandlers.ofString());
@@ -134,10 +135,10 @@ public class BeanAccountController {
 
         try (HttpClient httpClient = HttpClient.newHttpClient()) {
             HttpRequest request = HttpRequest.newBuilder()
-                    .uri(new URI(prop.getProperty("BASE_URL") + "/api/v1/beanAccount/delete/" + id))
+                    .uri(new URI(Main.BASE_URL + "/api/v1/beanAccount/delete/" + id))
                     .DELETE()
                     .header("Content-Type", "application/json")
-                    .header("Authorization", "Bearer " + prop.getProperty("ACCESS_TOKEN"))
+                    .header("Authorization", "Bearer " + Main.ACCESS_TOKEN)
                     .build();
 
             HttpResponse<String> response = httpClient.send(request, HttpResponse.BodyHandlers.ofString());
@@ -155,9 +156,9 @@ public class BeanAccountController {
     public static void getAllBeanAccounts() {
         try (HttpClient httpClient = HttpClient.newHttpClient()) {
             HttpRequest getRequest = HttpRequest.newBuilder()
-                    .uri(new URI(prop.getProperty("BASE_URL") + "/api/v1/beanAccount"))
+                    .uri(new URI(Main.BASE_URL + "/api/v1/beanAccount"))
                     .header("Content-Type", "application/json")
-                    .header("Authorization", "Bearer " + prop.getProperty("ACCESS_TOKEN"))
+                    .header("Authorization", "Bearer " + Main.ACCESS_TOKEN)
                     .GET()
                     .build();
 
@@ -185,9 +186,9 @@ public class BeanAccountController {
             int id = Integer.parseInt(scanner.nextLine());
 
             HttpRequest getRequest = HttpRequest.newBuilder()
-                    .uri(new URI(prop.getProperty("BASE_URL") + "/api/v1/beanAccount/" + id))
+                    .uri(new URI(Main.BASE_URL + "/api/v1/beanAccount/" + id))
                     .header("Content-Type", "application/json")
-                    .header("Authorization", "Bearer " + prop.getProperty("ACCESS_TOKEN"))
+                    .header("Authorization", "Bearer " + Main.ACCESS_TOKEN)
                     .GET()
                     .build();
 

@@ -1,5 +1,6 @@
 package com.bbdgrad.controller;
 
+import com.bbdgrad.Main;
 import com.bbdgrad.model.Category;
 import com.bbdgrad.model.Country;
 import com.google.gson.Gson;
@@ -33,10 +34,10 @@ public class CategoryController {
             category = null;
 
             HttpRequest request = HttpRequest.newBuilder()
-                    .uri(new URI(prop.getProperty("BASE_URL") + "/api/v1/category"))
+                    .uri(new URI(Main.BASE_URL + "/api/v1/category"))
                     .POST(HttpRequest.BodyPublishers.ofString(jsonBody))
                     .header("Content-Type", "application/json")
-                    .header("Authorization", "Bearer " + prop.getProperty("ACCESS_TOKEN"))
+                    .header("Authorization", "Bearer " + Main.ACCESS_TOKEN)
                     .build();
             jsonBody = null;
 
@@ -68,10 +69,10 @@ public class CategoryController {
 
             try (HttpClient httpClient = HttpClient.newHttpClient()) {
                 HttpRequest request = HttpRequest.newBuilder()
-                        .uri(new URI(prop.getProperty("BASE_URL") + "/api/v1/category/update/" + id + "?monthlyBudget=" + budget))
+                        .uri(new URI(Main.BASE_URL + "/api/v1/category/update/" + id + "?monthlyBudget=" + budget))
                         .PUT(HttpRequest.BodyPublishers.noBody())
                         .header("Content-Type", "application/json")
-                        .header("Authorization", "Bearer " + prop.getProperty("ACCESS_TOKEN"))
+                        .header("Authorization", "Bearer " + Main.ACCESS_TOKEN)
                         .build();
 
                 HttpResponse<String> response = httpClient.send(request, HttpResponse.BodyHandlers.ofString());
@@ -104,10 +105,10 @@ public class CategoryController {
 
             try (HttpClient httpClient = HttpClient.newHttpClient()) {
                 HttpRequest request = HttpRequest.newBuilder()
-                        .uri(new URI(prop.getProperty("BASE_URL") + "/api/v1/category/delete/" + id))
+                        .uri(new URI(Main.BASE_URL + "/api/v1/category/delete/" + id))
                         .DELETE()
                         .header("Content-Type", "application/json")
-                        .header("Authorization", "Bearer " + prop.getProperty("ACCESS_TOKEN"))
+                        .header("Authorization", "Bearer " + Main.ACCESS_TOKEN)
                         .build();
 
                 HttpResponse<String> response = httpClient.send(request, HttpResponse.BodyHandlers.ofString());
@@ -129,9 +130,9 @@ public class CategoryController {
     public static void getAllCategories() {
         try (HttpClient httpClient = HttpClient.newHttpClient()) {
             HttpRequest getRequest = HttpRequest.newBuilder()
-                    .uri(new URI(prop.getProperty("BASE_URL") + "/api/v1/category"))
+                    .uri(new URI(Main.BASE_URL + "/api/v1/category"))
                     .header("Content-Type", "application/json")
-                    .header("Authorization", "Bearer " + prop.getProperty("ACCESS_TOKEN"))
+                    .header("Authorization", "Bearer " + Main.ACCESS_TOKEN)
                     .GET()
                     .build();
 
@@ -159,9 +160,9 @@ public class CategoryController {
             int id = Integer.parseInt(scanner.nextLine());
 
             HttpRequest getRequest = HttpRequest.newBuilder()
-                    .uri(new URI(prop.getProperty("BASE_URL") + "/api/v1/category/" + id))
+                    .uri(new URI(Main.BASE_URL + "/api/v1/category/" + id))
                     .header("Content-Type", "application/json")
-                    .header("Authorization", "Bearer " + prop.getProperty("ACCESS_TOKEN"))
+                    .header("Authorization", "Bearer " + Main.ACCESS_TOKEN)
                     .GET()
                     .build();
 
