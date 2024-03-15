@@ -2,7 +2,8 @@ name: Java Unit Testing with Dockerized PostgreSQL
 
 on:
   push:
-
+    paths:
+      - "beanfinancetracker-server/**"
 jobs:
   testing:
     runs-on: ubuntu-latest
