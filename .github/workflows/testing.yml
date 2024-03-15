@@ -37,6 +37,7 @@ jobs:
       # Copy SQL script to PostgreSQL container
       - name: Copy SQL script to PostgreSQL container
         run: |
+          pwd
           sudo docker cp ./database/SQL/BeansFinancialTrackerTables.sql postgres-container:/tmp/BeansFinancialTrackerTables.sql
       # Run SQL scripts on PostgreSQL container
       - name: Run SQL scripts on PostgreSQL container
