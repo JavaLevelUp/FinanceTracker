@@ -50,3 +50,19 @@ jobs:
     # Build package
     - name: Build JAR
       run: mvn -B package
+      
+    - name: Build Executable
+      run: |
+        jpackage --input target/ --name BEANCLI --main-jar beanfinancetracker-cli-1.0-SNAPSHOT.jar --type deb
+        sudo dpkg -i BEANCLI.deb
+    - name: Release Executable
+      uses: actions/create-release@v1
+      with: 
+        tag_name: ${{ github.ref }}
+        release_name: Release ${{ github.ref }}
+        draft: false
+        prerelease: false
+      env:
+          GITHUB_TOKEN: ${{ secrets.GITHUB_TOKEN }}
+        
+    
